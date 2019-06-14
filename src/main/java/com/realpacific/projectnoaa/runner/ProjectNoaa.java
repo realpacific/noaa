@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa;
+package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.constants.Constants;
 import com.realpacific.projectnoaa.entities.Pair;
@@ -15,13 +15,18 @@ import com.realpacific.projectnoaa.searchers.Searcher;
 import com.realpacific.projectnoaa.searchers.SearcherFactory;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-final public class ProjectNoaa {
+final public class ProjectNoaa implements ApplicationRunner {
+
+    @Override
+    public void run(String... arguments) {
+        launchConsoleApp();
+    }
+
     public void launchConsoleApp() {
         String inputPath = queryPathFromUser();
         List<Record> records = readRecordsFromFile(inputPath);
