@@ -51,13 +51,9 @@ final public class ProjectNoaa implements ApplicationRunner {
     }
 
     private List<Record> readRecordsFromFile(String inputPath) {
-        try {
-            Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderParser(AppConstants.FILE_HEADERS, new BracketFormatter());
-            Reader<List<Record>> textReader = new LocalFileReader(FileUtils.createFile(inputPath), parser);
-            return textReader.read(null);
-        } catch (InvalidInputException e) {
-            return Collections.emptyList();
-        }
+        Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderParser(AppConstants.FILE_HEADERS, new BracketFormatter());
+        Reader<List<Record>> textReader = new LocalFileReader(FileUtils.createFile(inputPath), parser);
+        return textReader.read(null);
     }
 
 

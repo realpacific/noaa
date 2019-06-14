@@ -18,6 +18,7 @@ public class FileUtilsTest {
         assertTrue(path.toFile().exists());
 
         assertFalse(Paths.get(home, "/Downloads/NOA/DOESNOTEXIST.txt").toFile().exists());
+        System.out.println(Paths.get(home, "/Downloads/NOA/DOESNOTEXIST.txt").toFile().exists());
 
     }
 
