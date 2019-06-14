@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.searchers;
 
-import com.realpacific.projectnoaa.constants.Constants;
+import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
@@ -58,7 +58,7 @@ class LocationSearcher extends Searcher<Pair<Double, Double>> {
                 Math.sin(sourceLatLngInRadians.getFirst()) * Math.sin(destinationLatLngInRadians.getFirst())
                         + Math.cos(sourceLatLngInRadians.getFirst()) * Math.cos(destinationLatLngInRadians.getFirst())
                         * Math.cos(sourceLatLngInRadians.getSecond() - destinationLatLngInRadians.getSecond())
-        ) * Constants.RADIUS_OF_EARTH;
+        ) * AppConstants.RADIUS_OF_EARTH;
     }
 
     private Pair<Double, Double> convertLatLngFromDegreeToRadians(Pair<Double, Double> latLngInDegrees) {

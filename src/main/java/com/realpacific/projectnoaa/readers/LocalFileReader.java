@@ -51,7 +51,8 @@ public class LocalFileReader implements Reader<List<Record>> {
 
     private Record createRecord(String line) {
         Record.Builder recordBuilder = new Record.Builder();
-        recordBuilder.setUsafId(extractSubstringFromTextWithoutWhitespaces(0, line))
+        recordBuilder.setUsafId(
+                extractSubstringFromTextWithoutWhitespaces(0, line))
                 .setWban(extractSubstringFromTextWithoutWhitespaces(1, line))
                 .setStationName(extractSubstringFromTextWithoutWhitespaces(2, line))
                 .setCountry(extractSubstringFromTextWithoutWhitespaces(3, line))

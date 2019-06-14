@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa.regex;
+package com.realpacific.projectnoaa.formatter;
 
 public interface RegexFormatter {
     String format(String text);

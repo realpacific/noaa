@@ -1,24 +1,26 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.constants.Constants;
+import com.realpacific.projectnoaa.config.ConfigurationManager;
+import com.realpacific.projectnoaa.config.PropertiesFileManager;
+import com.realpacific.projectnoaa.constants.AppConstants;
+import com.realpacific.projectnoaa.entities.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.parsers.FileHeaderParser;
 import com.realpacific.projectnoaa.parsers.Parser;
+import com.realpacific.projectnoaa.printers.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.RecordPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.LocalFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.regex.BracketFormatter;
+import com.realpacific.projectnoaa.formatter.BracketFormatter;
 import com.realpacific.projectnoaa.searchers.Searcher;
 import com.realpacific.projectnoaa.searchers.SearcherFactory;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 final public class ProjectNoaa implements ApplicationRunner {
 
@@ -27,8 +29,9 @@ final public class ProjectNoaa implements ApplicationRunner {
         launchConsoleApp();
     }
 
-    public void launchConsoleApp() {
-        String inputPath = queryPathFromUser();
+    private void launchConsoleApp() {
+        // String inputPath = queryPathFromUser();
+        String inputPath = loadDefaultPath();
         List<Record> records = readRecordsFromFile(inputPath);
         if (records.isEmpty()) System.out.println("No records found!");
         else {
@@ -38,7 +41,7 @@ final public class ProjectNoaa implements ApplicationRunner {
 
     private String queryPathFromUser() {
         Reader<String> reader = new ConsoleReader();
-        return reader.read("Please input the path from user's home ~: ");
+        return reader.read("Please input the path from user's home: ~/ ");
     }
 
     private String loadDefaultPath() {
@@ -49,7 +52,7 @@ final public class ProjectNoaa implements ApplicationRunner {
 
     private List<Record> readRecordsFromFile(String inputPath) {
         try {
-            Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderParser(Constants.FILE_HEADERS, new BracketFormatter());
+            Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderParser(AppConstants.FILE_HEADERS, new BracketFormatter());
             Reader<List<Record>> textReader = new LocalFileReader(FileUtils.createFile(inputPath), parser);
             return textReader.read(null);
         } catch (InvalidInputException e) {
@@ -86,9 +89,13 @@ final public class ProjectNoaa implements ApplicationRunner {
     }
 
     private void displayResult(List<Record> searchResults) {
-        for (Record record : searchResults) {
-            System.out.println(record);
-        }
+        ConfigurationManager configurationManager =
+                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
+        Configuration configuration = configurationManager.loadPropertyFile();
+        RecordPrinter printer = new TableRecordPrinter(configuration);
+        printer.print(searchResults);
+
+
     }
 
 
