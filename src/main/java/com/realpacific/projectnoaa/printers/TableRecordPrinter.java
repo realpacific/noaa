@@ -4,50 +4,41 @@ import com.realpacific.projectnoaa.entities.Configuration;
 import com.realpacific.projectnoaa.entities.Record;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class TableRecordPrinter implements RecordPrinter {
-    private Configuration configuration;
-    private List<String> displayColumns;
-    private int maxWidth;
+public class TableRecordPrinter extends RecordPrinter {
 
     public TableRecordPrinter(Configuration configuration) {
-        this.configuration = configuration;
-        this.displayColumns = new ArrayList<>();
-        configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN)
-                .ifPresent(config -> displayColumns.addAll(Arrays.asList(config.toString().split(","))));
-
-        configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
-                .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
-
+        super(configuration);
     }
 
     @Override
     public void print(List<Record> records) {
-        for (String column : displayColumns) {
-            createCell(column);
-        }
+        printHeaderOfTable();
         printHorizontalLine(displayColumns.size());
 
         for (Record record : records) {
             Class cls = record.getClass();
             try {
                 for (String column : displayColumns) {
-                    Field field = cls.getDeclaredField(configuration.getConfigurationToRecordNameMap().get(column));
+                    Field field = cls.getDeclaredField(configNameToVariableNameMap.get(column));
                     field.setAccessible(true);
-                    createCell(field.get(record).toString());
+                    populateSingleCell(field.get(record).toString());
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
             System.out.println();
         }
-
     }
 
-    private void createCell(String value) {
+    private void printHeaderOfTable() {
+        for (String column : displayColumns) {
+            populateSingleCell(column);
+        }
+    }
+
+    private void populateSingleCell(String value) {
         System.out.format("\t%-" + maxWidth + "s\t|", value);
     }
 

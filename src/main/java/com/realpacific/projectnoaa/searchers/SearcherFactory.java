@@ -20,7 +20,7 @@ public class SearcherFactory {
             case "5":
                 return null;
             default:
-                throw new InvalidInputException("What?");
+                throw new InvalidInputException("Invalid option value. Should be between 1~5.");
         }
     }
 

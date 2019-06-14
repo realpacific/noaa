@@ -30,10 +30,10 @@ final public class ProjectNoaa implements ApplicationRunner {
     }
 
     private void launchConsoleApp() {
-        // String inputPath = queryPathFromUser();
-        String inputPath = loadDefaultPath();
+        String inputPath = queryPathFromUser();
+//        String inputPath = loadDefaultPath();
         List<Record> records = readRecordsFromFile(inputPath);
-        if (records.isEmpty()) System.out.println("No records found!");
+        if (records.isEmpty()) System.out.println("No records present in sources.");
         else {
             queryUserForOperation(records);
         }
@@ -89,13 +89,15 @@ final public class ProjectNoaa implements ApplicationRunner {
     }
 
     private void displayResult(List<Record> searchResults) {
-        ConfigurationManager configurationManager =
-                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
-        Configuration configuration = configurationManager.loadPropertyFile();
+        Configuration configuration = loadConfigurationFromFile();
         RecordPrinter printer = new TableRecordPrinter(configuration);
         printer.print(searchResults);
+    }
 
-
+    private Configuration loadConfigurationFromFile() {
+        ConfigurationManager configurationManager =
+                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
+        return configurationManager.loadPropertyFile();
     }
 
 
