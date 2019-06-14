@@ -17,17 +17,23 @@ public abstract class RecordPrinter {
 
 
     RecordPrinter(Configuration configuration) {
-        configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN)
-                .ifPresent(config -> {
-                    this.displayColumns = new ArrayList<>();
-                    this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
-                });
+        if (configuration != null) {
+            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN)
+                    .ifPresent(config -> {
+                        // Configuration found! Override the defaults.
+                        this.displayColumns = new ArrayList<>();
+                        this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
+                    });
 
-        configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
-                .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
+            configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
+                    .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
 
-        configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
-        checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
+            configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
+            checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
+        } else {
+            System.out.println("Error loading display configuration. Switching to default config.");
+            configNameToVariableNameMap = new Configuration(null).getConfigurationToRecordNameMap();
+        }
     }
 
     public abstract void print(List<Record> records);

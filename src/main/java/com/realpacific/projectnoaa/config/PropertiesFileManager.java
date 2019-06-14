@@ -18,7 +18,7 @@ public class PropertiesFileManager extends ConfigurationManager {
             Properties properties = new Properties();
             properties.load(inputStream);
             return properties;
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             return null;
         }
     }
