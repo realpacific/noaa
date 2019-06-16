@@ -4,7 +4,7 @@ import com.realpacific.projectnoaa.entities.Pair;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import com.realpacific.projectnoaa.formatter.BracketFormatter;
+import com.realpacific.projectnoaa.formatters.BracketFormatter;
 
 import java.util.Arrays;
 import java.util.Map;

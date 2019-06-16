@@ -39,13 +39,13 @@ public class TableRecordPrinter extends RecordPrinter {
     }
 
     private void populateSingleCell(String value) {
-        System.out.format("\t%-" + maxWidth + "s\t|", value);
+        System.out.format("\t%-" + maxWidth + "s|", value);
     }
 
     private void printHorizontalLine(int numberOfColumns) {
         System.out.println();
-        // The number of hyphens to print accounting for space allocated for value, two tabs and a pipe symbol
-        for (int i = 0; i < (numberOfColumns * (maxWidth + 4 + 4 + 1)); i++) {
+        // The number of hyphens to print accounting for space allocated for value, tabs and a pipe symbol
+        for (int i = 0; i < (numberOfColumns * (maxWidth + 4 + 1)); i++) {
             System.out.print("-");
         }
         System.out.println();

@@ -6,26 +6,27 @@ import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
-import com.realpacific.projectnoaa.exceptions.InvalidInputException;
+import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderParser;
 import com.realpacific.projectnoaa.parsers.Parser;
-import com.realpacific.projectnoaa.printers.TableRecordPrinter;
 import com.realpacific.projectnoaa.printers.RecordPrinter;
+import com.realpacific.projectnoaa.printers.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.LocalFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.formatter.BracketFormatter;
 import com.realpacific.projectnoaa.searchers.Searcher;
 import com.realpacific.projectnoaa.searchers.SearcherFactory;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 final public class ProjectNoaa implements ApplicationRunner {
 
     @Override
-    public void run(String... arguments) {
+    public void run() {
         launchConsoleApp();
     }
 
@@ -34,9 +35,7 @@ final public class ProjectNoaa implements ApplicationRunner {
 //        String inputPath = loadDefaultPath();
         List<Record> records = readRecordsFromFile(inputPath);
         if (records.isEmpty()) System.out.println("No records present in sources.");
-        else {
-            queryUserForOperation(records);
-        }
+        else queryUserForOperation(records);
     }
 
     private String queryPathFromUser() {

@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa.formatter;
+package com.realpacific.projectnoaa.formatters;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.realpacific.projectnoaa.parsers;
 
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.formatter.RegexFormatter;
+import com.realpacific.projectnoaa.formatters.RegexFormatter;
 
 import java.util.LinkedHashMap;
 import java.util.List;
