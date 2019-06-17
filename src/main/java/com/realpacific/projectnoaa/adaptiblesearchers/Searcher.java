@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa.searchers;
+package com.realpacific.projectnoaa.adaptiblesearchers;
 
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
@@ -7,16 +7,6 @@ import com.realpacific.projectnoaa.readers.Reader;
 import java.util.List;
 
 public abstract class Searcher<T> {
-    private List<Record> records;
-
-    Searcher(List<Record> records) {
-        this.records = records;
-    }
-
-    final List<Record> getRecords() {
-        return records;
-    }
-
     protected abstract T convert(Object query);
 
     protected abstract boolean isValid(T query);

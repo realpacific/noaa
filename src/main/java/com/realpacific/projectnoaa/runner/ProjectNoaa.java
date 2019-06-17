@@ -1,5 +1,7 @@
 package com.realpacific.projectnoaa.runner;
 
+import com.realpacific.projectnoaa.adaptiblesearchers.AdaptibleServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.PropertiesFileManager;
 import com.realpacific.projectnoaa.constants.AppConstants;
@@ -15,8 +17,8 @@ import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.LocalFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.searchers.Searcher;
-import com.realpacific.projectnoaa.searchers.SearcherFactory;
+import com.realpacific.projectnoaa.services.RecordService;
+import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.util.ArrayList;
@@ -25,17 +27,24 @@ import java.util.Map;
 
 final public class ProjectNoaa implements ApplicationRunner {
 
+    private RecordService service = new RecordServiceImp();
+    private List<Record> records = new ArrayList<>();
+
     @Override
     public void run() {
         launchConsoleApp();
     }
 
     private void launchConsoleApp() {
-        String inputPath = queryPathFromUser();
-//        String inputPath = loadDefaultPath();
+//        String inputPath = queryPathFromUser();
+        String inputPath = loadDefaultPath();
         List<Record> records = readRecordsFromFile(inputPath);
         if (records.isEmpty()) System.out.println("No records present in sources.");
-        else queryUserForOperation(records);
+        else {
+            service.bulkSave(records);
+            this.records.addAll(service.findAllRecords());
+            queryUserForOperation();
+        }
     }
 
     private String queryPathFromUser() {
@@ -56,11 +65,13 @@ final public class ProjectNoaa implements ApplicationRunner {
     }
 
 
-    private void queryUserForOperation(List<Record> records) {
+    private void queryUserForOperation() {
         while (true) {
             String inputOption = queryNatureOfOperation();
 
-            Searcher searcher = SearcherFactory.getSearcher(inputOption, records);
+            Searcher searcher = AdaptibleServiceFactory.getSearcher(inputOption, service);
+
+            // Searcher searcher = SearcherFactory.getSearcher(inputOption, records);
             List<Record> searchResults = new ArrayList<>();
             if (searcher == null) break;
             else {
@@ -76,10 +87,10 @@ final public class ProjectNoaa implements ApplicationRunner {
         Reader<String> optionsReader = new ConsoleReader();
         return optionsReader.read(String.format("\n%s\n%s\n%s\n%s\n%s\nEnter operation to perform:",
                 "1 - Search for station by name",
-                "2- Search stations by country code",
-                "3- Search stations by stations ID range",
-                "4- Search stations by Geographical location.",
-                "5- Exit"
+                "2 - Search stations by country code",
+                "3 - Search stations by stations ID range",
+                "4 - Search stations by Geographical location.",
+                "5 - Exit"
         ));
     }
 

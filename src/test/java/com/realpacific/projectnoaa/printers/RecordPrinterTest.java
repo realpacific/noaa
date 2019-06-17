@@ -35,9 +35,9 @@ public class RecordPrinterTest {
                 .setCountry("setCountry value")
                 .setState("setState value")
                 .setIcao("setIcao value")
-                .setLatitude("setLatitude value")
-                .setLongitude("setLongitude value")
-                .setElevation("setElevation value")
+                .setLatitude("0.000")
+                .setLongitude("0.000")
+                .setElevation("66.66")
                 .setStartDate("setStartDate value")
                 .setEndDate("setEndDate value");
 

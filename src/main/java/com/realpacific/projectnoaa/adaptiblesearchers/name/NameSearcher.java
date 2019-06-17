@@ -1,5 +1,6 @@
-package com.realpacific.projectnoaa.searchers;
+package com.realpacific.projectnoaa.adaptiblesearchers.name;
 
+import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
@@ -7,10 +8,7 @@ import com.realpacific.projectnoaa.readers.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class NameSearcher extends Searcher<String> {
-    NameSearcher(List<Record> records) {
-        super(records);
-    }
+abstract class NameSearcher extends Searcher<String> {
 
     @Override
     protected String convert(Object query) {
@@ -20,13 +18,6 @@ class NameSearcher extends Searcher<String> {
     @Override
     protected boolean isValid(String query) {
         return query != null && query.length() > 0;
-    }
-
-    @Override
-    protected List<Record> search(String query) {
-        return getRecords().stream()
-                .filter(record -> record.getStationName().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
     }
 
     @Override

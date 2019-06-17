@@ -1,6 +1,14 @@
 package com.realpacific.projectnoaa.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "tbl_record")
 public class Record {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String usafId;
     private String wban;
     private String stationName;
@@ -14,6 +22,10 @@ public class Record {
     private String endDate;
 
     private Record() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUsafId() {

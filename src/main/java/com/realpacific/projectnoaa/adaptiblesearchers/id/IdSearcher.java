@@ -1,24 +1,22 @@
-package com.realpacific.projectnoaa.searchers;
+package com.realpacific.projectnoaa.adaptiblesearchers.id;
 
+import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
+import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-class IdSearcher extends Searcher<Pair<Integer, Integer>> {
-    IdSearcher(List<Record> records) {
-        super(records);
-    }
-
+abstract class IdSearcher extends Searcher<Pair<Integer, Integer>> {
     @Override
     protected Pair<Integer, Integer> convert(Object query) {
         List<String> formatterQuery = (List<String>) query;
         if (formatterQuery == null || formatterQuery.size() != getNumberOfInputsRequired()) {
-            throw new InvalidInputException("Invalid input. Query requires input of " + getNumberOfInputsRequired());
+            throw new InvalidInputException("Invalid input. Query requires input of  " + getNumberOfInputsRequired());
         }
         return new Pair<>(Integer.valueOf(formatterQuery.get(0)), Integer.valueOf(formatterQuery.get(1)));
     }
@@ -28,15 +26,6 @@ class IdSearcher extends Searcher<Pair<Integer, Integer>> {
         return query.getFirst() != null && query.getSecond() != null && query.getFirst() < query.getSecond();
     }
 
-    @Override
-    protected List<Record> search(Pair<Integer, Integer> query) {
-        return getRecords().stream()
-                .filter(record -> {
-                    String stationId = extractDigitsFromUsafId(record.getUsafId());
-                    int stationIdAsInteger = Integer.valueOf(stationId);
-                    return (stationIdAsInteger > query.getFirst() && stationIdAsInteger < query.getSecond());
-                }).collect(Collectors.toList());
-    }
 
     private String extractDigitsFromUsafId(String usafId) {
         if (Character.isLetter(usafId.charAt(0))) {
