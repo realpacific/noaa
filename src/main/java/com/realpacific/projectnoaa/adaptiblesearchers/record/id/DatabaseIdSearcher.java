@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.id;
+package com.realpacific.projectnoaa.adaptiblesearchers.record.id;
 
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;

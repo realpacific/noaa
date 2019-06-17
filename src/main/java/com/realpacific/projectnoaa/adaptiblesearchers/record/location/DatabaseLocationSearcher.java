@@ -1,4 +1,4 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.location;
+package com.realpacific.projectnoaa.adaptiblesearchers.record.location;
 
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Pair;

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FileHeaderParser implements Parser<Map<String, Pair<Integer, Integer>>> {
+public class FileHeaderToColumnWidthParser implements Parser<Map<String, Pair<Integer, Integer>>> {
     /**
      * List of headers in same order as it occurs in the source
      */
@@ -19,7 +19,7 @@ public class FileHeaderParser implements Parser<Map<String, Pair<Integer, Intege
      */
     private RegexFormatter formatterStrategy;
 
-    public FileHeaderParser(List<String> headers, RegexFormatter formatterStrategy) {
+    public FileHeaderToColumnWidthParser(List<String> headers, RegexFormatter formatterStrategy) {
         this.headers = headers;
         this.formatterStrategy = formatterStrategy;
     }
@@ -41,11 +41,12 @@ public class FileHeaderParser implements Parser<Map<String, Pair<Integer, Intege
                 // Starts from width range of second last column
                 spacingForHeadlineMap.put(header, new Pair<>(lastMatchingIndex, Integer.MAX_VALUE));
             } else {
-                Pattern pattern = Pattern.compile(formatterStrategy.format(header) + "(\\s)+");
+                // Accommodating the possibility of having a space in front of a column name (as in the gsod files) except in the first column
+                Pattern pattern = Pattern.compile((i != 0 ? "(\\s)" : "") + formatterStrategy.format(header) + "(\\s)+");
                 Matcher matcher = pattern.matcher(text);
                 if (matcher.find()) {
                     spacingForHeadlineMap.put(header, new Pair<>(matcher.start(), matcher.end() - 1));
-                    lastMatchingIndex = matcher.end();
+                    lastMatchingIndex = matcher.end() - 1;
                 }
             }
         }

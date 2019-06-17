@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class RecordPrinter {
-    List<String> displayColumns = AppConstants.FILE_HEADERS;
+    List<String> displayColumns = AppConstants.FILE_HEADERS_STATIONS;
     int maxWidth = 30;
     Map<String, String> configNameToVariableNameMap;
 

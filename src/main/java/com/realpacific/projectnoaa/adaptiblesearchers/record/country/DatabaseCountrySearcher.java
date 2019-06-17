@@ -1,20 +1,21 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.name;
+package com.realpacific.projectnoaa.adaptiblesearchers.record.country;
 
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.services.RecordService;
 
 import java.util.List;
 
-class DatabaseNameSearcher extends NameSearcher {
+class DatabaseCountrySearcher extends CountrySearcher {
     private RecordService service;
 
-    public DatabaseNameSearcher(RecordService service) {
+    public DatabaseCountrySearcher(RecordService service) {
         this.service = service;
     }
 
     @Override
     protected List<Record> search(String query) {
-        return service.findAllRecordsByName(query);
+        System.out.println("hello");
+        return service.findAllRecordsByCountry(query);
     }
 
 }

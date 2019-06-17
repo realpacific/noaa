@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class LocalFileReader implements Reader<List<Record>> {
+public class StationsFileReader implements Reader<List<Record>> {
     private File file;
     private Parser<Map<String, Pair<Integer, Integer>>> fileHeaderParser;
     private List<Pair<Integer, Integer>> spacingList;
     private List<Record> records = new ArrayList<>();
 
-    public LocalFileReader(File file, Parser<Map<String, Pair<Integer, Integer>>> fileHeaderParser) {
+    public StationsFileReader(File file, Parser<Map<String, Pair<Integer, Integer>>> fileHeaderParser) {
         this.file = file;
         this.fileHeaderParser = fileHeaderParser;
     }

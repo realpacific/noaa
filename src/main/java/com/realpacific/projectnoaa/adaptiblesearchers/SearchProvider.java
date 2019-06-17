@@ -1,12 +1,11 @@
 package com.realpacific.projectnoaa.adaptiblesearchers;
 
-import com.realpacific.projectnoaa.entities.Record;
-import com.realpacific.projectnoaa.services.RecordService;
+import com.realpacific.projectnoaa.services.DatabaseService;
 
 import java.util.List;
 
-public interface SearchProvider {
-    public Searcher get(RecordService service);
+public interface SearchProvider<T> {
+    Searcher get(DatabaseService service);
 
-    public Searcher get(List<Record> records);
+    Searcher get(List<T> data);
 }

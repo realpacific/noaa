@@ -6,12 +6,12 @@ import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
 
-public abstract class Searcher<T> {
+public abstract class Searcher<T, R> {
     protected abstract T convert(Object query);
 
     protected abstract boolean isValid(T query);
 
-    protected abstract List<Record> search(T query);
+    protected abstract List<R> search(T query);
 
     public abstract int getNumberOfInputsRequired();
 
@@ -21,7 +21,7 @@ public abstract class Searcher<T> {
 
     public abstract Reader getInputReader();
 
-    public final List<Record> process(T query) {
+    public final List<R> process(T query) {
         System.out.println("Searching for " + query + "...");
         T formatterQuery = convert(query);
         if (!isValid(formatterQuery)) {

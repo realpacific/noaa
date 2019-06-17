@@ -1,38 +1,30 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.id;
+package com.realpacific.projectnoaa.adaptiblesearchers.record.location;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
-import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-abstract class IdSearcher extends Searcher<Pair<Integer, Integer>> {
+abstract class LocationSearcher extends Searcher<Pair<Double, Double>, Record> {
+
     @Override
-    protected Pair<Integer, Integer> convert(Object query) {
+    protected Pair<Double, Double> convert(Object query) {
         List<String> formatterQuery = (List<String>) query;
         if (formatterQuery == null || formatterQuery.size() != getNumberOfInputsRequired()) {
             throw new InvalidInputException("Invalid input. Query requires input of  " + getNumberOfInputsRequired());
         }
-        return new Pair<>(Integer.valueOf(formatterQuery.get(0)), Integer.valueOf(formatterQuery.get(1)));
+        return new Pair<>(new Double(formatterQuery.get(0)), new Double(formatterQuery.get(1)));
     }
 
     @Override
-    protected boolean isValid(Pair<Integer, Integer> query) {
-        return query.getFirst() != null && query.getSecond() != null && query.getFirst() < query.getSecond();
+    protected boolean isValid(Pair<Double, Double> query) {
+        return query.getFirst() != null && query.getSecond() != null;
     }
 
-
-    private String extractDigitsFromUsafId(String usafId) {
-        if (Character.isLetter(usafId.charAt(0))) {
-            usafId = usafId.replaceFirst("[a-zA-Z]", "");
-        }
-        return usafId;
-    }
 
     @Override
     public Reader getInputReader() {
@@ -46,6 +38,6 @@ abstract class IdSearcher extends Searcher<Pair<Integer, Integer>> {
 
     @Override
     public String[] getNamesOfInput() {
-        return new String[]{"Min.", "Max."};
+        return new String[]{"Latitude", "Longitude"};
     }
 }

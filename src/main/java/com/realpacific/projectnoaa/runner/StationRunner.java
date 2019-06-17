@@ -15,8 +15,8 @@ import com.realpacific.projectnoaa.printers.RecordPrinter;
 import com.realpacific.projectnoaa.printers.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
-import com.realpacific.projectnoaa.readers.StationsFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
+import com.realpacific.projectnoaa.readers.StationsFileReader;
 import com.realpacific.projectnoaa.services.RecordService;
 import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
@@ -25,54 +25,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @deprecated
- */
-final public class ProjectNoaa implements ApplicationRunner {
-
+public class StationRunner extends Runner<Record> {
     private RecordService service = new RecordServiceImp();
 
     @Override
     public void run() {
-        launchConsoleApp();
-    }
-
-    private void launchConsoleApp() {
-//        String inputPath = queryPathFromUser();
-        String inputPath = loadDefaultPath();
-        List<String> columnNames = AppConstants.FILE_HEADERS_STATIONS;
-        List<Record> records = readRecordsFromFile(inputPath, columnNames);
+        String inputPath = getFilePath();
+        List<Record> records = loadRecordsFromFile(inputPath);
         if (records.isEmpty()) System.out.println("No records present in sources.");
         else {
             service.bulkSave(records);
-            queryUserForOperation();
+            performUserOperation();
         }
     }
 
-    private String queryPathFromUser() {
-        Reader<String> reader = new ConsoleReader();
-        return reader.read("Please input the path from user's home: ~/ ");
-    }
-
-    private String loadDefaultPath() {
+    @Override
+    public String getFilePath() {
         String defaultPath = "Downloads/NOA/Stations.txt";
         Reader<String> reader = new DummyReader(defaultPath);
         return reader.read("Reading from path " + defaultPath);
     }
 
-    private List<Record> readRecordsFromFile(String inputPath, List<String> columnNames) {
-        Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(columnNames, new BracketFormatter());
+    @Override
+    List<String> getColumnNames() {
+        return AppConstants.FILE_HEADERS_STATIONS;
+    }
+
+    @Override
+    List<Record> loadRecordsFromFile(String inputPath) {
+        Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(getColumnNames(), new BracketFormatter());
         Reader<List<Record>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
         return textReader.read(null);
     }
 
+    @Override
+    String queryUserForNatureOfOperation() {
+        Reader<String> optionsReader = new ConsoleReader();
+        return optionsReader.read(String.format("\n%s\n%s\n%s\n%s\n%s\nEnter operation to perform:",
+                "1 - Search for station by name",
+                "2 - Search stations by country code",
+                "3 - Search stations by stations ID range",
+                "4 - Search stations by Geographical location.",
+                "5 - Exit"
+        ));
+    }
 
-    private void queryUserForOperation() {
+    @Override
+    Searcher resolveUserOperation(String userInput) {
+        return RecordServiceFactory.getSearcher(userInput, service);
+    }
+
+    @Override
+    void performUserOperation() {
         while (true) {
-            String inputOption = queryNatureOfOperation();
-
-            Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service);
-            // Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service.findAllRecords());
+            Searcher searcher = resolveUserOperation(queryUserForNatureOfOperation());
             List<Record> searchResults = new ArrayList<>();
             if (searcher == null) break;
             else {
@@ -84,18 +90,8 @@ final public class ProjectNoaa implements ApplicationRunner {
         }
     }
 
-    private String queryNatureOfOperation() {
-        Reader<String> optionsReader = new ConsoleReader();
-        return optionsReader.read(String.format("\n%s\n%s\n%s\n%s\n%s\nEnter operation to perform:",
-                "1 - Search for station by name",
-                "2 - Search stations by country code",
-                "3 - Search stations by stations ID range",
-                "4 - Search stations by Geographical location.",
-                "5 - Exit"
-        ));
-    }
-
-    private void displayResult(List<Record> searchResults) {
+    @Override
+    void displayResult(List<Record> searchResults) {
         Configuration configuration = loadConfigurationFromFile();
         RecordPrinter printer = new TableRecordPrinter(configuration);
         printer.print(searchResults);
@@ -106,6 +102,5 @@ final public class ProjectNoaa implements ApplicationRunner {
                 new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
         return configurationManager.loadPropertyFile();
     }
-
 
 }

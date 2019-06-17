@@ -4,7 +4,7 @@ import com.realpacific.projectnoaa.entities.Record;
 
 import java.util.List;
 
-public interface RecordService {
+public interface RecordService extends DatabaseService {
     void bulkSave(List<Record> records);
 
     List<Record> findAllRecords();
