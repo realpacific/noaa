@@ -10,6 +10,7 @@ public class Gsod {
     private Long id;
 
     private String stationNumber;
+
     private String wban;
     private String date;
     private String temperature;
@@ -26,7 +27,8 @@ public class Gsod {
     private String snowDepth;
     private String frshtt;
 
-    private Gsod(){}
+    protected Gsod() {
+    }
 
     public Long getId() {
         return id;

@@ -78,12 +78,12 @@ public class GsodRunner extends Runner<Gsod> {
            String userInput = queryUserForNatureOfOperation();
            Searcher searcher = resolveUserOperation(userInput);
            List<Gsod> searchResults = new ArrayList<>();
-           System.out.println(searcher + " " + userInput);
            if (searcher == null) break;
            else {
                Reader searchQueryReader = searcher.getInputReader();
                Object query = searchQueryReader.read("Input Query: ");
                searchResults.addAll(searcher.process(query));
+               System.out.println(searchResults.size());
            }
            displayResult(searchResults);
        }

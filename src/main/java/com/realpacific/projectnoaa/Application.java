@@ -1,8 +1,8 @@
 package com.realpacific.projectnoaa;
 
 import com.realpacific.projectnoaa.entities.Gsod;
-import com.realpacific.projectnoaa.entities.Record;
-import com.realpacific.projectnoaa.runner.*;
+import com.realpacific.projectnoaa.runner.GsodRunner;
+import com.realpacific.projectnoaa.runner.Runner;
 
 public class Application {
     public static void main(String[] args) {
@@ -13,9 +13,9 @@ public class Application {
 
         Runner<Gsod> runner = new GsodRunner();
         runner.run();
-/*
-        Runner<Record> runner = new StationRunner();
-        runner.run();*/
+
+       /* Runner<Record> runner2 = new StationRunner();
+        runner2.run();*/
     }
 
 }
