@@ -1,8 +1,8 @@
 package com.realpacific.projectnoaa.adaptiblesearchers;
 
 import com.realpacific.projectnoaa.config.ConfigurationManager;
-import com.realpacific.projectnoaa.config.PropertiesFileManager;
-import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.config.ConfigurationUtils;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.printers.Printer;
 import com.realpacific.projectnoaa.readers.Reader;
@@ -33,9 +33,8 @@ public abstract class Searcher<T, R> {
         getPrinter().print(search(formatterQuery));
     }
 
-    protected final Configuration loadConfigurationFromFile() {
-        ConfigurationManager configurationManager =
-                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
+    protected final NoaaConfiguration loadConfigurationFromFile() {
+        ConfigurationManager configurationManager = ConfigurationUtils.getConfigurationManager();
         return configurationManager.loadPropertyFile();
     }
 

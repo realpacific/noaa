@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.printers.gsod;
 
-import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.exceptions.InvalidConfigurationException;
@@ -17,11 +17,11 @@ public abstract class GsodPrinter extends Printer<Gsod> {
     Map<String, String> configNameToVariableNameMap;
 
 
-    GsodPrinter(Configuration configuration) {
+    GsodPrinter(NoaaConfiguration configuration) {
         if (configuration != null) {
-            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_GSOD)
+            configuration.get(NoaaConfiguration.CONFIGURATION_DISPLAY_COLUMN_FOR_GSOD)
                     .ifPresent(config -> {
-                        // Configuration found! Override the defaults.
+                        // NoaaConfiguration found! Override the defaults.
                         this.displayColumns = new ArrayList<>();
                         this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
                     });
@@ -30,7 +30,7 @@ public abstract class GsodPrinter extends Printer<Gsod> {
             checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
         } else {
             System.out.println("Error loading display configuration. Switching to default config.");
-            configNameToVariableNameMap = new Configuration(null).getConfigurationToGsodNameMap();
+            configNameToVariableNameMap = new NoaaConfiguration(null).getConfigurationToGsodNameMap();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.printers.gsod;
 
-import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.entities.Gsod;
 
 import java.lang.reflect.Field;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TableGsodPrinter extends GsodPrinter {
 
-    public TableGsodPrinter(Configuration configuration) {
+    public TableGsodPrinter(NoaaConfiguration configuration) {
         super(configuration);
     }
 

@@ -1,7 +1,7 @@
 package com.realpacific.projectnoaa.printers.station;
 
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.exceptions.InvalidConfigurationException;
 import com.realpacific.projectnoaa.printers.Printer;
@@ -17,23 +17,23 @@ public abstract class StationPrinter extends Printer<Station> {
     Map<String, String> configNameToVariableNameMap;
 
 
-    StationPrinter(Configuration configuration) {
+    StationPrinter(NoaaConfiguration configuration) {
         if (configuration != null) {
-            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
+            configuration.get(NoaaConfiguration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                     .ifPresent(config -> {
-                        // Configuration found! Override the defaults.
+                        // NoaaConfiguration found! Override the defaults.
                         this.displayColumns = new ArrayList<>();
                         this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
                     });
 
-            configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
+            configuration.get(NoaaConfiguration.CONFIGURATION_COLUMN_WIDTH)
                     .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
 
             configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
             checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
         } else {
             System.out.println("Error loading display configuration. Switching to default config.");
-            configNameToVariableNameMap = new Configuration(null).getConfigurationToRecordNameMap();
+            configNameToVariableNameMap = new NoaaConfiguration(null).getConfigurationToRecordNameMap();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.printers.station;
 
-import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.entities.Station;
 
 import java.lang.reflect.Field;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TableStationPrinter extends StationPrinter {
 
-    public TableStationPrinter(Configuration configuration) {
+    public TableStationPrinter(NoaaConfiguration configuration) {
         super(configuration);
     }
 

@@ -1,11 +1,11 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
+import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
-import com.realpacific.projectnoaa.config.PropertiesFileManager;
+import com.realpacific.projectnoaa.config.ConfigurationUtils;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
@@ -90,14 +90,13 @@ public class StationRunner extends Runner<Station> {
     @Override
     void displayResult(List<Station> searchResults) {
 
-        Configuration configuration = loadConfigurationFromFile();
+        NoaaConfiguration configuration = loadConfigurationFromFile();
         StationPrinter printer = new TableStationPrinter(configuration);
         printer.print(searchResults);
     }
 
-    private Configuration loadConfigurationFromFile() {
-        ConfigurationManager configurationManager =
-                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
+    private NoaaConfiguration loadConfigurationFromFile() {
+        ConfigurationManager configurationManager = ConfigurationUtils.getConfigurationManager();
         return configurationManager.loadPropertyFile();
     }
 

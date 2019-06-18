@@ -5,14 +5,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-public class Configuration {
+public class NoaaConfiguration {
     private Properties properties;
 
     public static final String CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS = "app.config.display.stations-display-columns";
     public static final String CONFIGURATION_DISPLAY_COLUMN_FOR_GSOD = "app.config.display.gsod-display-columns";
     public static final String CONFIGURATION_COLUMN_WIDTH = "app.config.display.print-width";
+    public static final String CONFIGURATION_USERNAME = "database.username";
+    public static final String CONFIGURATION_PASSWORD = "database.password";
+    public static final String CONFIGURATION_URL = "database.url";
+    public static final String CONFIGURATION_WORKING_DIR = "noaa.working.directory";
+    public static final String CONFIGURATION_ARCHIVE_DIR = "noaa.archive.directory";
 
-    public Configuration(Properties properties) {
+    public NoaaConfiguration(Properties properties) {
         this.properties = properties;
     }
 
@@ -60,7 +65,7 @@ public class Configuration {
 
     @Override
     public String toString() {
-        return "Configuration{" +
+        return "NoaaConfiguration{" +
                 "properties=" + properties +
                 '}';
     }

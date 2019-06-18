@@ -7,11 +7,14 @@ import java.util.Properties;
 public abstract class ConfigurationManager {
     protected abstract Properties read();
 
+    ConfigurationManager() {
+    }
+
     @Nullable
-    final public Configuration loadPropertyFile() {
+    final public NoaaConfiguration loadPropertyFile() {
         Properties properties = read();
         if (properties == null) return null;
-        return new Configuration(properties);
+        return new NoaaConfiguration(properties);
     }
 
 

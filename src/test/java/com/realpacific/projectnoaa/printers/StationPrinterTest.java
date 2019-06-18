@@ -1,8 +1,8 @@
 package com.realpacific.projectnoaa.printers;
 
 import com.realpacific.projectnoaa.config.ConfigurationManager;
-import com.realpacific.projectnoaa.config.PropertiesFileManager;
-import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.config.ConfigurationUtils;
+import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.entities.Station;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,14 +17,14 @@ public class StationPrinterTest {
 
     @Before
     public void setUp() {
-        reader = new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
+        reader = ConfigurationUtils.getConfigurationManager();
     }
 
     @Test
     public void test() {
-        Configuration configuration = reader.loadPropertyFile();
+        NoaaConfiguration configuration = reader.loadPropertyFile();
         List<String> displayColumns = new ArrayList<>();
-        configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
+        configuration.get(NoaaConfiguration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                 .ifPresent(config -> displayColumns.addAll(Arrays.asList(config.toString().split(","))));
 
         Station.Builder recordBuilder = new Station.Builder();

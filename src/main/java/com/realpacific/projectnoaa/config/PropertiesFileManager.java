@@ -1,13 +1,12 @@
 package com.realpacific.projectnoaa.config;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesFileManager extends ConfigurationManager {
+class PropertiesFileManager extends ConfigurationManager {
     private InputStream inputStream;
 
-    public PropertiesFileManager(InputStream inputStream) {
+    PropertiesFileManager(InputStream inputStream) {
         super();
         this.inputStream = inputStream;
     }
