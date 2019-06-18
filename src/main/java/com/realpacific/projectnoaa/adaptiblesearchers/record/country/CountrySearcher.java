@@ -3,7 +3,7 @@ package com.realpacific.projectnoaa.adaptiblesearchers.record.country;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.printers.Printer;
-import com.realpacific.projectnoaa.printers.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 

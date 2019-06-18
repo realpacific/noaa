@@ -85,13 +85,13 @@ public class GsodRepository {
     }
 
 
-    public List<Gsod> findAllAvailableDates() {
+    public List<String> findAllAvailableDates() {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         NativeQuery query = session.createNativeQuery("SELECT DISTINCT(g.date) FROM tbl_gsod AS g WHERE g.stationNumber != '999999' OR g.wban != '99999'");
         List<String> dates = query.list();
         session.getTransaction().commit();
         session.close();
-        return Collections.emptyList();
+        return dates;
     }
 }

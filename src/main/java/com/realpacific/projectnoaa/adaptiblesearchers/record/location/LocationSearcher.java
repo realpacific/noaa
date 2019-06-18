@@ -5,7 +5,7 @@ import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.printers.Printer;
-import com.realpacific.projectnoaa.printers.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 

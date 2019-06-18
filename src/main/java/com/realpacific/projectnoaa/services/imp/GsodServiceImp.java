@@ -30,7 +30,7 @@ public class GsodServiceImp implements GsodService {
     }
 
     @Override
-    public List<Gsod> findAllAvailableDates() {
+    public List<String> findAllAvailableDates() {
         return repository.findAllAvailableDates();
     }
 }

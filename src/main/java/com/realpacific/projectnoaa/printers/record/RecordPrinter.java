@@ -1,35 +1,39 @@
-package com.realpacific.projectnoaa.printers;
+package com.realpacific.projectnoaa.printers.record;
 
-import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.entities.Gsod;
+import com.realpacific.projectnoaa.config.Configuration;
+import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidConfigurationException;
+import com.realpacific.projectnoaa.printers.Printer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GsodPrinter extends Printer<Gsod> {
-    List<String> displayColumns = AppConstants.FILE_HEADERS_GSOD;
-    int maxWidth = 20;
+public abstract class RecordPrinter extends Printer<Record> {
+    List<String> displayColumns = AppConstants.FILE_HEADERS_STATIONS;
+    int maxWidth = 30;
     Map<String, String> configNameToVariableNameMap;
 
 
-    GsodPrinter(Configuration configuration) {
+    RecordPrinter(Configuration configuration) {
         if (configuration != null) {
-            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_GSOD)
+            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                     .ifPresent(config -> {
                         // Configuration found! Override the defaults.
                         this.displayColumns = new ArrayList<>();
                         this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
                     });
 
-            configNameToVariableNameMap = configuration.getConfigurationToGsodNameMap();
+            configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
+                    .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
+
+            configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
             checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
         } else {
             System.out.println("Error loading display configuration. Switching to default config.");
-            configNameToVariableNameMap = new Configuration(null).getConfigurationToGsodNameMap();
+            configNameToVariableNameMap = new Configuration(null).getConfigurationToRecordNameMap();
         }
     }
 

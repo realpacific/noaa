@@ -1,29 +1,29 @@
-package com.realpacific.projectnoaa.printers;
+package com.realpacific.projectnoaa.printers.record;
 
 import com.realpacific.projectnoaa.config.Configuration;
-import com.realpacific.projectnoaa.entities.Gsod;
+import com.realpacific.projectnoaa.entities.Record;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class TableGsodPrinter extends GsodPrinter {
+public class TableRecordPrinter extends RecordPrinter {
 
-    public TableGsodPrinter(Configuration configuration) {
+    public TableRecordPrinter(Configuration configuration) {
         super(configuration);
     }
 
     @Override
-    public void print(List<Gsod> data) {
+    public void print(List<Record> records) {
         printHeaderOfTable();
         printHorizontalLine(displayColumns.size());
 
-        for (Gsod gsod : data) {
-            Class cls = gsod.getClass();
+        for (Record record : records) {
+            Class cls = record.getClass();
             try {
                 for (String column : displayColumns) {
-                    Field field = cls.getDeclaredField(this.configNameToVariableNameMap.get(column));
+                    Field field = cls.getDeclaredField(configNameToVariableNameMap.get(column));
                     field.setAccessible(true);
-                    populateSingleCell(field.get(gsod).toString());
+                    populateSingleCell(field.get(record).toString());
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -31,7 +31,6 @@ public class TableGsodPrinter extends GsodPrinter {
             System.out.println();
         }
     }
-
 
     private void printHeaderOfTable() {
         for (String column : displayColumns) {

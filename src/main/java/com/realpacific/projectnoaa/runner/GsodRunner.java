@@ -74,18 +74,16 @@ public class GsodRunner extends Runner<Gsod> {
 
     @Override
     void performUserOperation() {
-       while (true) {
-           String userInput = queryUserForNatureOfOperation();
-           Searcher searcher = resolveUserOperation(userInput);
-           List<Gsod> searchResults = new ArrayList<>();
-           if (searcher == null) break;
-           else {
-               Reader searchQueryReader = searcher.getInputReader();
-               Object query = searchQueryReader.read("Input Query: ");
-               searcher.process(query);
-               System.out.println(searchResults.size());
-           }
-       }
+        while (true) {
+            String userInput = queryUserForNatureOfOperation();
+            Searcher searcher = resolveUserOperation(userInput);
+            if (searcher == null) break;
+            else {
+                Reader searchQueryReader = searcher.getInputReader();
+                Object query = searchQueryReader.read("Input Query: ");
+                searcher.process(query);
+            }
+        }
     }
 
     @Override

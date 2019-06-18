@@ -1,6 +1,5 @@
 package com.realpacific.projectnoaa.adaptiblesearchers.gsod.date;
 
-import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.services.GsodService;
 
@@ -16,6 +15,6 @@ public class DatabaseAvailableDateSearcher extends AvailableDateSearcher {
     @Override
     protected List<String> search(Pair<String, String> query) {
 
-        return null;
+        return service.findAllAvailableDates();
     }
 }
