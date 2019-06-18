@@ -2,11 +2,10 @@ package com.realpacific.projectnoaa.printers;
 
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.PropertiesFileManager;
-import com.realpacific.projectnoaa.entities.Configuration;
+import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.entities.Record;
 import org.junit.Before;
 import org.junit.Test;
-import sun.security.krb5.Config;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class RecordPrinterTest {
     public void test() {
         Configuration configuration = reader.loadPropertyFile();
         List<String> displayColumns = new ArrayList<>();
-        configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN)
+        configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                 .ifPresent(config -> displayColumns.addAll(Arrays.asList(config.toString().split(","))));
 
         Record.Builder recordBuilder = new Record.Builder();

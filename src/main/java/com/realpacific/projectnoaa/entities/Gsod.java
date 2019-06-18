@@ -10,7 +10,6 @@ public class Gsod {
     private Long id;
 
     private String stationNumber;
-
     private String wban;
     private String date;
     private String temperature;

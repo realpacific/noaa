@@ -5,7 +5,7 @@ import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.PropertiesFileManager;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.entities.Configuration;
+import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
@@ -21,7 +21,6 @@ import com.realpacific.projectnoaa.services.RecordService;
 import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -79,19 +78,18 @@ public class StationRunner extends Runner<Record> {
     void performUserOperation() {
         while (true) {
             Searcher searcher = resolveUserOperation(queryUserForNatureOfOperation());
-            List<Record> searchResults = new ArrayList<>();
             if (searcher == null) break;
             else {
                 Reader searchQueryReader = searcher.getInputReader();
                 Object query = searchQueryReader.read("Input Query: ");
-                searchResults.addAll(searcher.process(query));
+                searcher.process(query);
             }
-            displayResult(searchResults);
         }
     }
 
     @Override
     void displayResult(List<Record> searchResults) {
+
         Configuration configuration = loadConfigurationFromFile();
         RecordPrinter printer = new TableRecordPrinter(configuration);
         printer.print(searchResults);

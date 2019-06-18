@@ -2,17 +2,12 @@ package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.RecordServiceFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
-import com.realpacific.projectnoaa.config.ConfigurationManager;
-import com.realpacific.projectnoaa.config.PropertiesFileManager;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.entities.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
-import com.realpacific.projectnoaa.printers.RecordPrinter;
-import com.realpacific.projectnoaa.printers.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.StationsFileReader;
@@ -21,7 +16,6 @@ import com.realpacific.projectnoaa.services.RecordService;
 import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,14 +67,13 @@ final public class ProjectNoaa implements ApplicationRunner {
 
             Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service);
             // Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service.findAllRecords());
-            List<Record> searchResults = new ArrayList<>();
             if (searcher == null) break;
             else {
                 Reader searchQueryReader = searcher.getInputReader();
                 Object query = searchQueryReader.read("Input Query: ");
-                searchResults.addAll(searcher.process(query));
+                searcher.process(query);
             }
-            displayResult(searchResults);
+
         }
     }
 
@@ -94,18 +87,4 @@ final public class ProjectNoaa implements ApplicationRunner {
                 "5 - Exit"
         ));
     }
-
-    private void displayResult(List<Record> searchResults) {
-        Configuration configuration = loadConfigurationFromFile();
-        RecordPrinter printer = new TableRecordPrinter(configuration);
-        printer.print(searchResults);
-    }
-
-    private Configuration loadConfigurationFromFile() {
-        ConfigurationManager configurationManager =
-                new PropertiesFileManager(getClass().getClassLoader().getResourceAsStream("config.properties"));
-        return configurationManager.loadPropertyFile();
-    }
-
-
 }

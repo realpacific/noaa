@@ -1,6 +1,5 @@
 package com.realpacific.projectnoaa.config;
 
-import com.realpacific.projectnoaa.entities.Configuration;
 import com.sun.istack.internal.Nullable;
 
 import java.util.Properties;

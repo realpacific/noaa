@@ -1,8 +1,8 @@
 package com.realpacific.projectnoaa.printers;
 
-import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.config.Configuration;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.constants.AppConstants;
+import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.exceptions.InvalidConfigurationException;
 
 import java.util.ArrayList;
@@ -10,29 +10,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public abstract class RecordPrinter extends Printer<Record> {
-    List<String> displayColumns = AppConstants.FILE_HEADERS_STATIONS;
-    int maxWidth = 30;
+public abstract class GsodPrinter extends Printer<Gsod> {
+    List<String> displayColumns = AppConstants.FILE_HEADERS_GSOD;
+    int maxWidth = 20;
     Map<String, String> configNameToVariableNameMap;
 
 
-    RecordPrinter(Configuration configuration) {
+    GsodPrinter(Configuration configuration) {
         if (configuration != null) {
-            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
+            configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_GSOD)
                     .ifPresent(config -> {
                         // Configuration found! Override the defaults.
                         this.displayColumns = new ArrayList<>();
                         this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
                     });
 
-            configuration.get(Configuration.CONFIGURATION_COLUMN_WIDTH)
-                    .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
-
-            configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
+            configNameToVariableNameMap = configuration.getConfigurationToGsodNameMap();
             checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
         } else {
             System.out.println("Error loading display configuration. Switching to default config.");
-            configNameToVariableNameMap = new Configuration(null).getConfigurationToRecordNameMap();
+            configNameToVariableNameMap = new Configuration(null).getConfigurationToGsodNameMap();
         }
     }
 

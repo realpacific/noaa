@@ -82,10 +82,9 @@ public class GsodRunner extends Runner<Gsod> {
            else {
                Reader searchQueryReader = searcher.getInputReader();
                Object query = searchQueryReader.read("Input Query: ");
-               searchResults.addAll(searcher.process(query));
+               searcher.process(query);
                System.out.println(searchResults.size());
            }
-           displayResult(searchResults);
        }
     }
 

@@ -28,4 +28,9 @@ public class GsodServiceImp implements GsodService {
     public List<Gsod> findAllGsodByNameAndDate(String name, String date) {
         return repository.findAllGsodsByStationNameAndDate(name, date);
     }
+
+    @Override
+    public List<Gsod> findAllAvailableDates() {
+        return repository.findAllAvailableDates();
+    }
 }

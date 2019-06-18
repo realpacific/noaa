@@ -4,6 +4,8 @@ import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
+import com.realpacific.projectnoaa.printers.Printer;
+import com.realpacific.projectnoaa.printers.TableGsodPrinter;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
@@ -36,4 +38,8 @@ abstract class IdAndDateSearcher extends Searcher<Pair<String, String>, Gsod> {
         return new MultiInputConsoleReader("Id", "Date (YYYYMMDD)");
     }
 
+    @Override
+    public Printer<Gsod> getPrinter() {
+        return new TableGsodPrinter(loadConfigurationFromFile());
+    }
 }

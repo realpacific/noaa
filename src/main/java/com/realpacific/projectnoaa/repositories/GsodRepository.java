@@ -5,9 +5,11 @@ import com.realpacific.projectnoaa.entities.Gsod;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @Transactional
@@ -83,4 +85,13 @@ public class GsodRepository {
     }
 
 
+    public List<Gsod> findAllAvailableDates() {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        NativeQuery query = session.createNativeQuery("SELECT DISTINCT(g.date) FROM tbl_gsod AS g WHERE g.stationNumber != '999999' OR g.wban != '99999'");
+        List<String> dates = query.list();
+        session.getTransaction().commit();
+        session.close();
+        return Collections.emptyList();
+    }
 }

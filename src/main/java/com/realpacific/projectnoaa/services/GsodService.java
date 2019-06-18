@@ -13,4 +13,6 @@ public interface GsodService extends DatabaseService {
 
     List<Gsod> findAllGsodByNameAndDate(String name, String date);
 
+    List<Gsod> findAllAvailableDates();
+
 }

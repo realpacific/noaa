@@ -4,6 +4,8 @@ import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Record;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
+import com.realpacific.projectnoaa.printers.Printer;
+import com.realpacific.projectnoaa.printers.TableRecordPrinter;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
@@ -39,5 +41,11 @@ abstract class LocationSearcher extends Searcher<Pair<Double, Double>, Record> {
     @Override
     public String[] getNamesOfInput() {
         return new String[]{"Latitude", "Longitude"};
+    }
+
+
+    @Override
+    public Printer<Record> getPrinter() {
+        return new TableRecordPrinter(loadConfigurationFromFile());
     }
 }
