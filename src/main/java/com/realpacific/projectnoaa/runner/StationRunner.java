@@ -1,39 +1,39 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.adaptiblesearchers.RecordServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.PropertiesFileManager;
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.config.Configuration;
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
-import com.realpacific.projectnoaa.printers.record.RecordPrinter;
-import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.station.StationPrinter;
+import com.realpacific.projectnoaa.printers.station.TableStationPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.Reader;
 import com.realpacific.projectnoaa.readers.StationsFileReader;
-import com.realpacific.projectnoaa.services.RecordService;
-import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
+import com.realpacific.projectnoaa.services.StationService;
+import com.realpacific.projectnoaa.services.imp.StationServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.util.List;
 import java.util.Map;
 
-public class StationRunner extends Runner<Record> {
-    private RecordService service = new RecordServiceImp();
+public class StationRunner extends Runner<Station> {
+    private StationService service = new StationServiceImp();
 
     @Override
     public void run() {
         String inputPath = getFilePath();
-        List<Record> records = loadRecordsFromFile(inputPath);
-        if (records.isEmpty()) System.out.println("No records present in sources.");
+        List<Station> stations = loadRecordsFromFile(inputPath);
+        if (stations.isEmpty()) System.out.println("No stations present in sources.");
         else {
-            service.bulkSave(records);
+            service.bulkSave(stations);
             performUserOperation();
         }
     }
@@ -51,9 +51,9 @@ public class StationRunner extends Runner<Record> {
     }
 
     @Override
-    List<Record> loadRecordsFromFile(String inputPath) {
+    List<Station> loadRecordsFromFile(String inputPath) {
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(getColumnNames(), new BracketFormatter());
-        Reader<List<Record>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
+        Reader<List<Station>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
         return textReader.read(null);
     }
 
@@ -71,7 +71,7 @@ public class StationRunner extends Runner<Record> {
 
     @Override
     Searcher resolveUserOperation(String userInput) {
-        return RecordServiceFactory.getSearcher(userInput, service);
+        return StationServiceFactory.getSearcher(userInput, service);
     }
 
     @Override
@@ -88,10 +88,10 @@ public class StationRunner extends Runner<Record> {
     }
 
     @Override
-    void displayResult(List<Record> searchResults) {
+    void displayResult(List<Station> searchResults) {
 
         Configuration configuration = loadConfigurationFromFile();
-        RecordPrinter printer = new TableRecordPrinter(configuration);
+        StationPrinter printer = new TableStationPrinter(configuration);
         printer.print(searchResults);
     }
 

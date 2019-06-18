@@ -1,8 +1,8 @@
-package com.realpacific.projectnoaa.printers.record;
+package com.realpacific.projectnoaa.printers.station;
 
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.config.Configuration;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.exceptions.InvalidConfigurationException;
 import com.realpacific.projectnoaa.printers.Printer;
 
@@ -11,13 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public abstract class RecordPrinter extends Printer<Record> {
+public abstract class StationPrinter extends Printer<Station> {
     List<String> displayColumns = AppConstants.FILE_HEADERS_STATIONS;
     int maxWidth = 30;
     Map<String, String> configNameToVariableNameMap;
 
 
-    RecordPrinter(Configuration configuration) {
+    StationPrinter(Configuration configuration) {
         if (configuration != null) {
             configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                     .ifPresent(config -> {

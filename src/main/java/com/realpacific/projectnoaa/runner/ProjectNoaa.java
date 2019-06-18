@@ -1,10 +1,10 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.adaptiblesearchers.RecordServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
@@ -12,8 +12,8 @@ import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.StationsFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.services.RecordService;
-import com.realpacific.projectnoaa.services.imp.RecordServiceImp;
+import com.realpacific.projectnoaa.services.StationService;
+import com.realpacific.projectnoaa.services.imp.StationServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 final public class ProjectNoaa implements ApplicationRunner {
 
-    private RecordService service = new RecordServiceImp();
+    private StationService service = new StationServiceImp();
 
     @Override
     public void run() {
@@ -35,10 +35,10 @@ final public class ProjectNoaa implements ApplicationRunner {
 //        String inputPath = queryPathFromUser();
         String inputPath = loadDefaultPath();
         List<String> columnNames = AppConstants.FILE_HEADERS_STATIONS;
-        List<Record> records = readRecordsFromFile(inputPath, columnNames);
-        if (records.isEmpty()) System.out.println("No records present in sources.");
+        List<Station> stations = readRecordsFromFile(inputPath, columnNames);
+        if (stations.isEmpty()) System.out.println("No stations present in sources.");
         else {
-            service.bulkSave(records);
+            service.bulkSave(stations);
             queryUserForOperation();
         }
     }
@@ -54,9 +54,9 @@ final public class ProjectNoaa implements ApplicationRunner {
         return reader.read("Reading from path " + defaultPath);
     }
 
-    private List<Record> readRecordsFromFile(String inputPath, List<String> columnNames) {
+    private List<Station> readRecordsFromFile(String inputPath, List<String> columnNames) {
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(columnNames, new BracketFormatter());
-        Reader<List<Record>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
+        Reader<List<Station>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
         return textReader.read(null);
     }
 
@@ -65,8 +65,8 @@ final public class ProjectNoaa implements ApplicationRunner {
         while (true) {
             String inputOption = queryNatureOfOperation();
 
-            Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service);
-            // Searcher searcher = RecordServiceFactory.getSearcher(inputOption, service.findAllRecords());
+            Searcher searcher = StationServiceFactory.getSearcher(inputOption, service);
+            // Searcher searcher = StationServiceFactory.getSearcher(inputOption, service.findAllStations());
             if (searcher == null) break;
             else {
                 Reader searchQueryReader = searcher.getInputReader();

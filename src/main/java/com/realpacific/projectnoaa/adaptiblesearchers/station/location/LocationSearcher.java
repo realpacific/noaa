@@ -1,17 +1,17 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.record.location;
+package com.realpacific.projectnoaa.adaptiblesearchers.station.location;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.printers.Printer;
-import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.station.TableStationPrinter;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
 
-abstract class LocationSearcher extends Searcher<Pair<Double, Double>, Record> {
+abstract class LocationSearcher extends Searcher<Pair<Double, Double>, Station> {
 
     @Override
     protected Pair<Double, Double> convert(Object query) {
@@ -45,7 +45,7 @@ abstract class LocationSearcher extends Searcher<Pair<Double, Double>, Record> {
 
 
     @Override
-    public Printer<Record> getPrinter() {
-        return new TableRecordPrinter(loadConfigurationFromFile());
+    public Printer<Station> getPrinter() {
+        return new TableStationPrinter(loadConfigurationFromFile());
     }
 }

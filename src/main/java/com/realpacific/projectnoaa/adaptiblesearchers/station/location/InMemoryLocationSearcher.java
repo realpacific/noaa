@@ -1,24 +1,24 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.record.location;
+package com.realpacific.projectnoaa.adaptiblesearchers.station.location;
 
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.utils.NumberUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 class InMemoryLocationSearcher extends LocationSearcher {
-    private List<Record> records;
+    private List<Station> stations;
 
-    public InMemoryLocationSearcher(List<Record> records) {
-        this.records = records;
+    public InMemoryLocationSearcher(List<Station> stations) {
+        this.stations = stations;
     }
 
 
     @Override
-    protected List<Record> search(Pair<Double, Double> query) {
-        return records.stream()
+    protected List<Station> search(Pair<Double, Double> query) {
+        return stations.stream()
                 .filter(
                         record -> {
                             if (record.getLatitude() == null || record.getLongitude() == null) return false;
@@ -29,9 +29,9 @@ class InMemoryLocationSearcher extends LocationSearcher {
                 .collect(Collectors.toList());
     }
 
-    private boolean isWithinRequiredRadius(Pair<Double, Double> query, Record record, Double radius) {
+    private boolean isWithinRequiredRadius(Pair<Double, Double> query, Station station, Double radius) {
         return distanceBetweenInKM(query,
-                new Pair<>(Double.valueOf(record.getLatitude()), Double.valueOf(record.getLongitude()))) < radius;
+                new Pair<>(Double.valueOf(station.getLatitude()), Double.valueOf(station.getLongitude()))) < radius;
     }
 
 

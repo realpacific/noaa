@@ -1,29 +1,29 @@
-package com.realpacific.projectnoaa.printers.record;
+package com.realpacific.projectnoaa.printers.station;
 
 import com.realpacific.projectnoaa.config.Configuration;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class TableRecordPrinter extends RecordPrinter {
+public class TableStationPrinter extends StationPrinter {
 
-    public TableRecordPrinter(Configuration configuration) {
+    public TableStationPrinter(Configuration configuration) {
         super(configuration);
     }
 
     @Override
-    public void print(List<Record> records) {
+    public void print(List<Station> stations) {
         printHeaderOfTable();
         printHorizontalLine(displayColumns.size());
 
-        for (Record record : records) {
-            Class cls = record.getClass();
+        for (Station station : stations) {
+            Class cls = station.getClass();
             try {
                 for (String column : displayColumns) {
                     Field field = cls.getDeclaredField(configNameToVariableNameMap.get(column));
                     field.setAccessible(true);
-                    populateSingleCell(field.get(record).toString());
+                    populateSingleCell(field.get(station).toString());
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();

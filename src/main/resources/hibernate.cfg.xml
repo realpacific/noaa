@@ -22,7 +22,7 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>
-        <mapping class="com.realpacific.projectnoaa.entities.Record"/>
+        <mapping class="com.realpacific.projectnoaa.entities.Station"/>
         <mapping class="com.realpacific.projectnoaa.entities.Gsod"/>
     </session-factory>
 </hibernate-configuration>

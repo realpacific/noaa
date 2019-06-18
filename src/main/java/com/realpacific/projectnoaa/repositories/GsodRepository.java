@@ -61,7 +61,7 @@ public class GsodRepository {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         Query<Gsod> query = session
-                .createNativeQuery("SELECT g.* FROM tbl_record AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.country like ?1", Gsod.class);
+                .createNativeQuery("SELECT g.* FROM tbl_station AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.country like ?1", Gsod.class);
         query.setParameter(0, date);
         query.setParameter(1, country);
         List<Gsod> gsods = query.list();
@@ -75,7 +75,7 @@ public class GsodRepository {
     public List<Gsod> findAllGsodsByStationNameAndDate(String stationName, String date) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Query<Gsod> query = session.createNativeQuery("SELECT g.* FROM tbl_record AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.stationName like ?1", Gsod.class);
+        Query<Gsod> query = session.createNativeQuery("SELECT g.* FROM tbl_station AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.stationName like ?1", Gsod.class);
         query.setParameter(0, date)
                 .setParameter(1, stationName);
         List<Gsod> gsods = query.list();

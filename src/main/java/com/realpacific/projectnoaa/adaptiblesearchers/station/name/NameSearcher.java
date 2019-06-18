@@ -1,13 +1,13 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.record.country;
+package com.realpacific.projectnoaa.adaptiblesearchers.station.name;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.printers.Printer;
-import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.station.TableStationPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
-abstract class CountrySearcher extends Searcher<String, Record> {
+abstract class NameSearcher extends Searcher<String, Station> {
 
     @Override
     protected String convert(Object query) {
@@ -16,7 +16,7 @@ abstract class CountrySearcher extends Searcher<String, Record> {
 
     @Override
     protected boolean isValid(String query) {
-        return query != null && query.length() == 2;
+        return query != null && query.length() > 0;
     }
 
     @Override
@@ -29,9 +29,13 @@ abstract class CountrySearcher extends Searcher<String, Record> {
         return 1;
     }
 
+    @Override
+    public String[] getNamesOfInput() {
+        return new String[]{"Name"};
+    }
 
     @Override
-    public Printer<Record> getPrinter() {
-        return new TableRecordPrinter(loadConfigurationFromFile());
+    public Printer<Station> getPrinter() {
+        return new TableStationPrinter(loadConfigurationFromFile());
     }
 }

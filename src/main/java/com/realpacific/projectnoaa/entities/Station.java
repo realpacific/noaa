@@ -3,8 +3,8 @@ package com.realpacific.projectnoaa.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbl_record")
-public class Record {
+@Table(name = "tbl_station")
+public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,7 +21,7 @@ public class Record {
     private String startDate;
     private String endDate;
 
-    private Record() {
+    private Station() {
     }
 
     public Long getId() {
@@ -143,27 +143,27 @@ public class Record {
             return this;
         }
 
-        public Record build() {
-            Record record = new Record();
-            record.usafId = this.usafId;
-            record.wban = this.wban;
-            record.country = this.country;
-            record.state = this.state;
-            record.icao = this.icao;
-            record.latitude = this.latitude;
-            record.longitude = this.longitude;
-            record.elevation = this.elevation;
-            record.startDate = this.startDate;
-            record.endDate = this.endDate;
-            record.stationName = this.stationName;
-            return record;
+        public Station build() {
+            Station station = new Station();
+            station.usafId = this.usafId;
+            station.wban = this.wban;
+            station.country = this.country;
+            station.state = this.state;
+            station.icao = this.icao;
+            station.latitude = this.latitude;
+            station.longitude = this.longitude;
+            station.elevation = this.elevation;
+            station.startDate = this.startDate;
+            station.endDate = this.endDate;
+            station.stationName = this.stationName;
+            return station;
         }
     }
 
 
     @Override
     public String toString() {
-        return "Record{" +
+        return "Station{" +
                 "usafId='" + usafId + '\'' +
                 ", wban='" + wban + '\'' +
                 ", stationName='" + stationName + '\'' +

@@ -3,7 +3,7 @@ package com.realpacific.projectnoaa.printers;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.PropertiesFileManager;
 import com.realpacific.projectnoaa.config.Configuration;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecordPrinterTest {
+public class StationPrinterTest {
     private ConfigurationManager reader;
 
     @Before
@@ -27,7 +27,7 @@ public class RecordPrinterTest {
         configuration.get(Configuration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                 .ifPresent(config -> displayColumns.addAll(Arrays.asList(config.toString().split(","))));
 
-        Record.Builder recordBuilder = new Record.Builder();
+        Station.Builder recordBuilder = new Station.Builder();
         recordBuilder.setUsafId("setUsafId value")
                 .setWban("setWban value")
                 .setStationName("setStationName value")
@@ -40,14 +40,14 @@ public class RecordPrinterTest {
                 .setStartDate("setStartDate value")
                 .setEndDate("setEndDate value");
 
-        Record record = recordBuilder.build();
+        Station station = recordBuilder.build();
 
-        Class cls = record.getClass();
+        Class cls = station.getClass();
         try {
             for (String column : displayColumns) {
                 Field field = cls.getDeclaredField(configuration.getConfigurationToRecordNameMap().get(column));
                 field.setAccessible(true);
-                System.out.println(field.get(record));
+                System.out.println(field.get(station));
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();

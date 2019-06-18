@@ -1,17 +1,17 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.record.id;
+package com.realpacific.projectnoaa.adaptiblesearchers.station.id;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.printers.Printer;
-import com.realpacific.projectnoaa.printers.record.TableRecordPrinter;
+import com.realpacific.projectnoaa.printers.station.TableStationPrinter;
 import com.realpacific.projectnoaa.readers.MultiInputConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
 
-abstract class IdSearcher extends Searcher<Pair<Integer, Integer>, Record> {
+abstract class IdSearcher extends Searcher<Pair<Integer, Integer>, Station> {
     @Override
     protected Pair<Integer, Integer> convert(Object query) {
         List<String> formatterQuery = (List<String>) query;
@@ -51,7 +51,7 @@ abstract class IdSearcher extends Searcher<Pair<Integer, Integer>, Record> {
 
 
     @Override
-    public Printer<Record> getPrinter() {
-        return new TableRecordPrinter(loadConfigurationFromFile());
+    public Printer<Station> getPrinter() {
+        return new TableStationPrinter(loadConfigurationFromFile());
     }
 }

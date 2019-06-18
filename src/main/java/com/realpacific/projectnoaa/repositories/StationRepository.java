@@ -1,7 +1,7 @@
 package com.realpacific.projectnoaa.repositories;
 
 import com.realpacific.projectnoaa.connection.HibernateUtils;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -10,83 +10,83 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public class RecordRepository {
+public class StationRepository {
     private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
     @Transactional
-    public void save(List<Record> records) {
+    public void save(List<Station> stations) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        for (Record record : records) {
-            session.save(record);
+        for (Station station : stations) {
+            session.save(station);
         }
         session.getTransaction().commit();
         session.close();
     }
 
     @Transactional
-    public List<Record> findAllRecords() {
+    public List<Station> findAllStations() {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        List<Record> records = session.createQuery("SELECT r FROM Record r", Record.class).list();
+        List<Station> stations = session.createQuery("SELECT r FROM Station r", Station.class).list();
         session.getTransaction().commit();
         session.close();
-        return records;
+        return stations;
 
     }
 
     @Transactional
-    public List<Record> findAllRecordsByCountry(String country) {
+    public List<Station> findAllStationsByCountry(String country) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Query<Record> query = session.createQuery("SELECT r FROM Record r WHERE r.country = :country", Record.class);
+        Query<Station> query = session.createQuery("SELECT r FROM Station r WHERE r.country = :country", Station.class);
         query.setParameter("country", country);
-        List<Record> records = query.list();
+        List<Station> stations = query.list();
         session.getTransaction().commit();
         session.close();
-        return records;
+        return stations;
     }
 
 
     @Transactional
-    public List<Record> findAllRecordsByName(String name) {
+    public List<Station> findAllStationsByName(String name) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Query<Record> query = session.createQuery("SELECT r FROM Record r WHERE r.stationName like :name", Record.class);
+        Query<Station> query = session.createQuery("SELECT r FROM Station r WHERE r.stationName like :name", Station.class);
         query.setParameter("name", "%" + name + "%");
-        List<Record> records = query.list();
+        List<Station> stations = query.list();
         session.getTransaction().commit();
         session.close();
-        return records;
+        return stations;
     }
 
 
     @Transactional
-    public List<Record> findAllRecordsByIdRange(String begin, String end) {
+    public List<Station> findAllStationsByIdRange(String begin, String end) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Query<Record> query = session.createQuery("SELECT r FROM Record r WHERE substring(r.usafId, 1) > :begin AND substring(r.usafId, 1) < :end", Record.class);
+        Query<Station> query = session.createQuery("SELECT r FROM Station r WHERE substring(r.usafId, 1) > :begin AND substring(r.usafId, 1) < :end", Station.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
-        List<Record> records = query.list();
+        List<Station> stations = query.list();
         session.getTransaction().commit();
         session.close();
-        return records;
+        return stations;
     }
 
 
     @Transactional
-    public List<Record> findAllRecordsWithinLocationRange(double latitude, double longitude, double radius) {
+    public List<Station> findAllStationsWithinLocationRange(double latitude, double longitude, double radius) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        String queryForLocationWithinRadiusOf50 = "SELECT * FROM tbl_record WHERE (ACOS(SIN(?0) * SIN(RADIANS(CAST(latitude AS DECIMAL(65,4)))) + COS(?0) * COS(RADIANS(CAST(latitude AS DECIMAL(65,4)))) * COS(?1- RADIANS(CAST(longitude AS DECIMAL(65,4))))) * ?2) < 50";
-        Query<Record> query = session.createNativeQuery(queryForLocationWithinRadiusOf50, Record.class);
+        String queryForLocationWithinRadiusOf50 = "SELECT * FROM tbl_station WHERE (ACOS(SIN(?0) * SIN(RADIANS(CAST(latitude AS DECIMAL(65,4)))) + COS(?0) * COS(RADIANS(CAST(latitude AS DECIMAL(65,4)))) * COS(?1- RADIANS(CAST(longitude AS DECIMAL(65,4))))) * ?2) < 50";
+        Query<Station> query = session.createNativeQuery(queryForLocationWithinRadiusOf50, Station.class);
         query.setParameter(0, Math.toRadians(latitude));
         query.setParameter(1, Math.toRadians(longitude));
         query.setParameter(2, radius);
-        List<Record> records = query.list();
+        List<Station> stations = query.list();
         session.getTransaction().commit();
         session.close();
-        return records;
+        return stations;
     }
 }

@@ -1,7 +1,7 @@
 package com.realpacific.projectnoaa.readers;
 
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.parsers.Parser;
 
@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class StationsFileReader implements Reader<List<Record>> {
+public class StationsFileReader implements Reader<List<Station>> {
     private File file;
     private Parser<Map<String, Pair<Integer, Integer>>> fileHeaderParser;
     private List<Pair<Integer, Integer>> spacingList;
-    private List<Record> records = new ArrayList<>();
+    private List<Station> stations = new ArrayList<>();
 
     public StationsFileReader(File file, Parser<Map<String, Pair<Integer, Integer>>> fileHeaderParser) {
         this.file = file;
@@ -23,7 +23,7 @@ public class StationsFileReader implements Reader<List<Record>> {
     }
 
     @Override
-    public List<Record> read(String displayMessage) {
+    public List<Station> read(String displayMessage) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             // First line contains headers
@@ -31,10 +31,10 @@ public class StationsFileReader implements Reader<List<Record>> {
             spacingList = getColumnWidthInformationFromHeader(headerText);
 
             while ((line = reader.readLine()) != null) {
-                Record record = createRecord(line);
-                records.add(record);
+                Station station = createRecord(line);
+                stations.add(station);
             }
-            return records;
+            return stations;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new InvalidInputException("No such file found in the path.");
@@ -49,8 +49,8 @@ public class StationsFileReader implements Reader<List<Record>> {
         return new ArrayList<>(headerToSpacingMap.values());
     }
 
-    private Record createRecord(String line) {
-        Record.Builder recordBuilder = new Record.Builder();
+    private Station createRecord(String line) {
+        Station.Builder recordBuilder = new Station.Builder();
         recordBuilder.setUsafId(
                 extractSubstringFromTextWithoutWhitespaces(0, line))
                 .setWban(extractSubstringFromTextWithoutWhitespaces(1, line))

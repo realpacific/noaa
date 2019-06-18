@@ -1,21 +1,21 @@
-package com.realpacific.projectnoaa.adaptiblesearchers.record.id;
+package com.realpacific.projectnoaa.adaptiblesearchers.station.id;
 
 import com.realpacific.projectnoaa.entities.Pair;
-import com.realpacific.projectnoaa.entities.Record;
+import com.realpacific.projectnoaa.entities.Station;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 class InMemoryIdSearcher extends IdSearcher {
-    private List<Record> records;
+    private List<Station> stations;
 
-    public InMemoryIdSearcher(List<Record> records) {
-        this.records = records;
+    public InMemoryIdSearcher(List<Station> stations) {
+        this.stations = stations;
     }
 
     @Override
-    protected List<Record> search(Pair<Integer, Integer> query) {
-        return records.stream()
+    protected List<Station> search(Pair<Integer, Integer> query) {
+        return stations.stream()
                 .filter(record -> {
                     String stationId = extractDigitsFromUsafId(record.getUsafId());
                     int stationIdAsInteger = Integer.valueOf(stationId);
