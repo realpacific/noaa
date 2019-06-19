@@ -4,8 +4,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -32,9 +34,23 @@ public class FileUtilsTest {
 
 
     @Test
-    public void testForFilesList() {
-        assertTrue(FileUtils.exists("/Downloads/NOA"));
-        assertEquals(2, FileUtils.getFilesAt("/Downloads/NOA", "gsod").length);
+    public void testForFilesList_ShouldSupportRegexSearchAndNameSearch() {
+        String basePathForCurrentTest = "/testForFilesList/";
+        String[] fileNames = new String[]{"Hello.txt", "World.txt", "12.txt", "tset.gsod", "clusus.gsod"};
+
+        for (String name : fileNames) {
+            createTestFileAt(Paths.get(basePathForCurrentTest, name).toString());
+        }
+
+        assertEquals(3, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "*.txt").length);
+        assertEquals(2, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "*.gsod").length);
+        assertEquals(1, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "clusus.gsod").length);
+        try {
+            Files.delete(FileUtils.getFullPathFromHome(basePathForCurrentTest));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
@@ -62,4 +78,11 @@ public class FileUtilsTest {
         }
     }
 
+
+    @Test
+    public void testForBehaviourOf() {
+        String path = "/test/";
+        createTestFileAt(Paths.get(path, "move_test.txt").toString());
+        System.out.println(Arrays.toString(FileUtils.getFilesWithNamesMatchingDescriptionAt(path, "move_test.txt")));
+    }
 }

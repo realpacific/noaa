@@ -4,6 +4,11 @@ There are two branches in this project;
 * enhancement-0 : contains reading Stations.txt and searching in-memory
 * enhancement-1 : contains reading gsod & stations.txt and searching in database
 
+### TO START
+* Stations from In memory: -Dnoaa.Main=inmemory
+* Stations from mysql db: -Dnoaa.Main=stations
+* Gsod from mysql db: -Dnoaa.Main=gsod
+
 
 ### Search inputs for STATION:
 * NAME: CWOS

@@ -25,9 +25,23 @@ public class FileUtils {
         return Files.exists(overallPath);
     }
 
-    public static File[] getFilesAt(String path, String extension) {
+    /**
+     * Get list of files that matches the given description
+     *
+     * @param path        path from home
+     * @param description begin with * to search using extensions or full file name
+     * @return the list of files
+     */
+    public static File[] getFilesWithNamesMatchingDescriptionAt(String path, String description) {
         Path overallPath = getFullPathFromHome(path);
-        return new File(overallPath.toString()).listFiles((dir, name) -> name.endsWith("." + extension));
+        return new File(overallPath.toString()).listFiles((dir, name) -> {
+            if (description.startsWith("*")) {
+                String extension = description.replaceAll("\\*", "");
+                return name.endsWith(extension);
+            } else {
+                return name.equals(description);
+            }
+        });
     }
 
     public static boolean move(String source, String destination) {

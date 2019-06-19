@@ -19,6 +19,7 @@ public class StationSearchProviderFactory {
 
     public static Searcher getSearcher(String code, List<Station> stations) {
         SearchProvider searchProvider = resolveSearchProvider(code);
+        if(searchProvider == null) return null;
         return searchProvider.get(stations);
     }
 

@@ -22,33 +22,15 @@ import java.util.Map;
 
 public class GsodRunner extends Runner<Gsod> {
 
-    private GsodService service = new GsodServiceImp();
-    private String workingDirectory;
-    private String archiveDirectory;
+    private GsodService service;
 
     public GsodRunner(String workingDirectory, String archiveDirectory) {
-        this.workingDirectory = workingDirectory;
-        this.archiveDirectory = archiveDirectory;
-        File[] filesToRead = FileUtils.getFilesAt(workingDirectory, "gsod");
-        if (filesToRead.length > 0) {
-            List<Gsod> gsods = loadRecordsFromFile(filesToRead);
-            service.bulkSave(gsods);
-        }
+        super(workingDirectory, archiveDirectory);
     }
 
     @Override
-    public void run() {
-        performUserOperation();
-    }
-
-    @Override
-    List<String> getColumnNames() {
-        return AppConstants.FILE_HEADERS_GSOD;
-    }
-
-    @Override
-    public String getWorkingDirectory() {
-        return this.workingDirectory;
+    File[] getWorkingFilesAtDirectory() {
+        return FileUtils.getFilesWithNamesMatchingDescriptionAt(workingDirectory, "*.gsod");
     }
 
     @Override
@@ -62,6 +44,26 @@ public class GsodRunner extends Runner<Gsod> {
         }
         System.out.println("Total number of gsod records: " + gsodsFromFile.size());
         return gsodsFromFile;
+    }
+
+    @Override
+    void initializeService() {
+        service = new GsodServiceImp();
+    }
+
+    @Override
+    void persistToRepository(List<Gsod> data) {
+        service.bulkSave(data);
+    }
+
+    @Override
+    public void run() {
+        performUserOperation();
+    }
+
+    @Override
+    List<String> getColumnNames() {
+        return AppConstants.FILE_HEADERS_GSOD;
     }
 
     @Override
@@ -92,13 +94,6 @@ public class GsodRunner extends Runner<Gsod> {
                 Object query = searchQueryReader.read("Input Query: ");
                 searcher.process(query);
             }
-        }
-    }
-
-    @Override
-    void displayResult(List<Gsod> searchResults) {
-        for (Gsod gsod : searchResults) {
-            System.out.println(gsod);
         }
     }
 }
