@@ -1,6 +1,7 @@
 package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
+import com.realpacific.projectnoaa.readers.Reader;
 
 import java.io.File;
 import java.util.List;
@@ -23,7 +24,18 @@ public abstract class Runner<T> {
 
     abstract void initializeService();
 
-    public abstract void run();
+    public final void run() {
+        while (true) {
+            String option = queryUserForNatureOfOperation();
+            Searcher searcher = resolveUserOperation(option);
+            if (searcher == null) break;
+            else {
+                Reader searchQueryReader = searcher.getInputReader();
+                Object query = searchQueryReader.read("Input Query: ");
+                searcher.process(query);
+            }
+        }
+    }
 
     abstract File[] getWorkingFilesAtDirectory();
 
@@ -36,6 +48,4 @@ public abstract class Runner<T> {
     abstract String queryUserForNatureOfOperation();
 
     abstract Searcher resolveUserOperation(String userInput);
-
-    abstract void performUserOperation();
 }

@@ -57,11 +57,6 @@ public class GsodRunner extends Runner<Gsod> {
     }
 
     @Override
-    public void run() {
-        performUserOperation();
-    }
-
-    @Override
     List<String> getColumnNames() {
         return AppConstants.FILE_HEADERS_GSOD;
     }
@@ -81,19 +76,5 @@ public class GsodRunner extends Runner<Gsod> {
     @Override
     Searcher resolveUserOperation(String userInput) {
         return GsodSearchProviderFactory.getSearcher(userInput, service);
-    }
-
-    @Override
-    void performUserOperation() {
-        while (true) {
-            String userInput = queryUserForNatureOfOperation();
-            Searcher searcher = resolveUserOperation(userInput);
-            if (searcher == null) break;
-            else {
-                Reader searchQueryReader = searcher.getInputReader();
-                Object query = searchQueryReader.read("Input Query: ");
-                searcher.process(query);
-            }
-        }
     }
 }

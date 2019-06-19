@@ -31,14 +31,9 @@ public class StationInMemoryRunner extends Runner<Station> {
     }
 
     @Override
-    public void run() {
-        performUserOperation();
-    }
-
-    @Override
     File[] getWorkingFilesAtDirectory() {
         Reader<String> reader = new ConsoleReader();
-        String inputPath = reader.read("Please input the path from user's home: ~/ ");
+        String inputPath = reader.read("Please input the path from user's home to the Stations.txt file: ~/");
         return FileUtils.getFilesWithNamesMatchingDescriptionAt(inputPath, "Stations.txt");
     }
 
@@ -78,19 +73,5 @@ public class StationInMemoryRunner extends Runner<Station> {
     @Override
     Searcher resolveUserOperation(String userInput) {
         return StationSearchProviderFactory.getSearcher(userInput, stations);
-    }
-
-    @Override
-    void performUserOperation() {
-        while (true) {
-            String option = queryUserForNatureOfOperation();
-            Searcher searcher = resolveUserOperation(option);
-            if (searcher == null) break;
-            else {
-                Reader searchQueryReader = searcher.getInputReader();
-                Object query = searchQueryReader.read("Input Query: ");
-                searcher.process(query);
-            }
-        }
     }
 }

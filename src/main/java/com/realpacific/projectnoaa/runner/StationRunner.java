@@ -35,11 +35,6 @@ public class StationRunner extends Runner<Station> {
     }
 
     @Override
-    public void run() {
-        performUserOperation();
-    }
-
-    @Override
     File[] getWorkingFilesAtDirectory() {
         return FileUtils.getFilesWithNamesMatchingDescriptionAt(workingDirectory, "Stations.txt");
     }
@@ -87,18 +82,5 @@ public class StationRunner extends Runner<Station> {
     @Override
     Searcher resolveUserOperation(String userInput) {
         return StationSearchProviderFactory.getSearcher(userInput, service);
-    }
-
-    @Override
-    void performUserOperation() {
-        while (true) {
-            Searcher searcher = resolveUserOperation(queryUserForNatureOfOperation());
-            if (searcher == null) break;
-            else {
-                Reader searchQueryReader = searcher.getInputReader();
-                Object query = searchQueryReader.read("Input Query: ");
-                searcher.process(query);
-            }
-        }
     }
 }
