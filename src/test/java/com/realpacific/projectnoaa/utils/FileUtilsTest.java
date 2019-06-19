@@ -1,5 +1,8 @@
 package com.realpacific.projectnoaa.utils;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -12,17 +15,26 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class FileUtilsTest {
+    private static final String[] FILE_NAMES = new String[]{"Hello.txt", "World.txt", "12.txt", "tset.gsod", "clusus.gsod"};
+    private static final String BASE_PATH_FOR_TEST = "/testForFilesList/";
 
+    @BeforeClass
+    public static void setup() {
+        for (String name : FILE_NAMES) {
+            createTestFileAt(Paths.get(BASE_PATH_FOR_TEST, name).toString());
+        }
+
+    }
 
     @Test
     public void test() {
         String home = System.getProperty("user.home");
-        Path path = Paths.get(home, "/Downloads/NOA/Stations.txt");
-        System.out.println(path.toFile().exists());
-        assertTrue(path.toFile().exists());
+
+        for (String fileName : FILE_NAMES) {
+            assertTrue(FileUtils.exists(Paths.get(BASE_PATH_FOR_TEST, fileName).toString()));
+        }
 
         assertFalse(Paths.get(home, "/Downloads/NOA/DOESNOTEXIST.txt").toFile().exists());
-        System.out.println(Paths.get(home, "/Downloads/NOA/DOESNOTEXIST.txt").toFile().exists());
 
     }
 
@@ -35,21 +47,9 @@ public class FileUtilsTest {
 
     @Test
     public void testForFilesList_ShouldSupportRegexSearchAndNameSearch() {
-        String basePathForCurrentTest = "/testForFilesList/";
-        String[] fileNames = new String[]{"Hello.txt", "World.txt", "12.txt", "tset.gsod", "clusus.gsod"};
-
-        for (String name : fileNames) {
-            createTestFileAt(Paths.get(basePathForCurrentTest, name).toString());
-        }
-
-        assertEquals(3, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "*.txt").length);
-        assertEquals(2, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "*.gsod").length);
-        assertEquals(1, FileUtils.getFilesWithNamesMatchingDescriptionAt(basePathForCurrentTest, "clusus.gsod").length);
-        try {
-            Files.delete(FileUtils.getFullPathFromHome(basePathForCurrentTest));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        assertEquals(3, FileUtils.getFilesWithNamesMatchingDescriptionAt(BASE_PATH_FOR_TEST, "*.txt").length);
+        assertEquals(2, FileUtils.getFilesWithNamesMatchingDescriptionAt(BASE_PATH_FOR_TEST, "*.gsod").length);
+        assertEquals(1, FileUtils.getFilesWithNamesMatchingDescriptionAt(BASE_PATH_FOR_TEST, "clusus.gsod").length);
 
     }
 
@@ -67,7 +67,7 @@ public class FileUtilsTest {
         assertTrue(FileUtils.exists(Paths.get(destinationPath, Paths.get(sourcePath).getFileName().toString()).toString()));
     }
 
-    private void createTestFileAt(String path) {
+    private static void createTestFileAt(String path) {
         try {
             String home = System.getProperty("user.home");
             Paths.get(home, path).getParent().toFile().mkdirs();
@@ -84,5 +84,19 @@ public class FileUtilsTest {
         String path = "/test/";
         createTestFileAt(Paths.get(path, "move_test.txt").toString());
         System.out.println(Arrays.toString(FileUtils.getFilesWithNamesMatchingDescriptionAt(path, "move_test.txt")));
+    }
+
+
+    @AfterClass
+    public static void cleanup() {
+        try {
+            Path pathOfTemporaryFolder = FileUtils.getFullPathFromHome(BASE_PATH_FOR_TEST);
+            for (String fileName : FILE_NAMES) {
+                Files.deleteIfExists(Paths.get(FileUtils.getFullPathFromHome(BASE_PATH_FOR_TEST).toString(), fileName));
+            }
+            Files.deleteIfExists(pathOfTemporaryFolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

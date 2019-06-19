@@ -26,4 +26,5 @@ There are two branches in this project;
 * `config.properties` file contains the configuration properties like what columns to display, db connection, etc.
 * `hibernate.cgf.xml` contains the default hibernate connection properties & will be overridden by values in `config.properties` at runtime if present;
 
- 
+ ### NOTES:
+ * Some of the test cases I have written here, I've used it as a`learning test`
