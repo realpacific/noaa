@@ -21,7 +21,7 @@ public abstract class StationPrinter extends Printer<Station> {
         if (configuration != null) {
             configuration.get(NoaaConfiguration.CONFIGURATION_DISPLAY_COLUMN_FOR_STATIONS)
                     .ifPresent(config -> {
-                        // NoaaConfiguration found! Override the defaults.
+                        // Configuration found! Override the defaults.
                         this.displayColumns = new ArrayList<>();
                         this.displayColumns.addAll(Arrays.asList(config.toString().split(",")));
                     });
@@ -29,11 +29,11 @@ public abstract class StationPrinter extends Printer<Station> {
             configuration.get(NoaaConfiguration.CONFIGURATION_COLUMN_WIDTH)
                     .ifPresent(configValue -> this.maxWidth = Integer.valueOf(configValue.toString()));
 
-            configNameToVariableNameMap = configuration.getConfigurationToRecordNameMap();
+            configNameToVariableNameMap = configuration.getConfigurationToStationNameMap();
             checkForInvalidConfigurationColumnProperty(configNameToVariableNameMap);
         } else {
             System.out.println("Error loading display configuration. Switching to default config.");
-            configNameToVariableNameMap = new NoaaConfiguration(null).getConfigurationToRecordNameMap();
+            configNameToVariableNameMap = new NoaaConfiguration(null).getConfigurationToStationNameMap();
         }
     }
 

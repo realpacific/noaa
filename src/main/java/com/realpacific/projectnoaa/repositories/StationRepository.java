@@ -65,9 +65,10 @@ public class StationRepository {
     public List<Station> findAllStationsByIdRange(String begin, String end) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Query<Station> query = session.createQuery("SELECT r FROM Station r WHERE substring(r.usafId, 1) > :begin AND substring(r.usafId, 1) < :end", Station.class);
-        query.setParameter("begin", begin);
-        query.setParameter("end", end);
+        Query<Station> query =
+                session.createNativeQuery("SELECT * FROM tbl_station AS s WHERE s.usafId BETWEEN :beginRange AND :endRange", Station.class);
+        query.setParameter("beginRange", begin);
+        query.setParameter("endRange", end);
         List<Station> stations = query.list();
         session.getTransaction().commit();
         session.close();

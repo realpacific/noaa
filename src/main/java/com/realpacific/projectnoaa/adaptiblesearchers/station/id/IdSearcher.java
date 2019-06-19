@@ -11,19 +11,19 @@ import com.realpacific.projectnoaa.readers.Reader;
 
 import java.util.List;
 
-abstract class IdSearcher extends Searcher<Pair<Integer, Integer>, Station> {
+abstract class IdSearcher extends Searcher<Pair<String, String>, Station> {
     @Override
-    protected Pair<Integer, Integer> convert(Object query) {
+    protected Pair<String, String> convert(Object query) {
         List<String> formatterQuery = (List<String>) query;
         if (formatterQuery == null || formatterQuery.size() != getNumberOfInputsRequired()) {
             throw new InvalidInputException("Invalid input. Query requires input of  " + getNumberOfInputsRequired());
         }
-        return new Pair<>(Integer.valueOf(formatterQuery.get(0)), Integer.valueOf(formatterQuery.get(1)));
+        return new Pair<>(formatterQuery.get(0), formatterQuery.get(1));
     }
 
     @Override
-    protected boolean isValid(Pair<Integer, Integer> query) {
-        return query.getFirst() != null && query.getSecond() != null && query.getFirst() < query.getSecond();
+    protected boolean isValid(Pair<String, String> query) {
+        return query.getFirst() != null && query.getSecond() != null && query.getFirst().compareTo(query.getSecond()) < 0;
     }
 
 

@@ -16,6 +16,7 @@ public class NoaaConfiguration {
     public static final String CONFIGURATION_URL = "database.url";
     public static final String CONFIGURATION_WORKING_DIR = "noaa.working.directory";
     public static final String CONFIGURATION_ARCHIVE_DIR = "noaa.archive.directory";
+    public static final String CONFIGURATION_LAUNCH_OPTION = "noaa.Main";
 
     public NoaaConfiguration(Properties properties) {
         this.properties = properties;
@@ -25,7 +26,7 @@ public class NoaaConfiguration {
         return Optional.ofNullable(properties.get(key));
     }
 
-    public Map<String, String> getConfigurationToRecordNameMap() {
+    public Map<String, String> getConfigurationToStationNameMap() {
         Map<String, String> map = new HashMap<>();
         map.put("USAF", "usafId");
         map.put("WBAN", "wban");

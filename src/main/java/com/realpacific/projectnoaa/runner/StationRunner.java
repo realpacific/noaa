@@ -21,26 +21,34 @@ import com.realpacific.projectnoaa.services.StationService;
 import com.realpacific.projectnoaa.services.imp.StationServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class StationRunner extends Runner<Station> {
     private StationService service = new StationServiceImp();
+    private String workingDirectory;
+    private String archiveDirectory;
 
-    @Override
-    public void run() {
-        String inputPath = getFilePath();
-        List<Station> stations = loadRecordsFromFile(inputPath);
-        if (stations.isEmpty()) System.out.println("No stations present in sources.");
-        else {
+    public StationRunner(String workingDirectory, String archiveDirectory) {
+        this.workingDirectory = workingDirectory;
+        this.archiveDirectory = archiveDirectory;
+        String inputPath = getWorkingDirectory();
+        if(FileUtils.exists(inputPath)) {
+            List<Station> stations = loadRecordsFromFile(FileUtils.getFile(inputPath));
             service.bulkSave(stations);
-            performUserOperation();
         }
     }
 
     @Override
-    public String getFilePath() {
-        String defaultPath = "Downloads/NOA/Stations.txt";
+    public void run() {
+        performUserOperation();
+    }
+
+    @Override
+    public String getWorkingDirectory() {
+        String defaultPath = workingDirectory + "/Stations.txt";
         Reader<String> reader = new DummyReader(defaultPath);
         return reader.read("Reading from path " + defaultPath);
     }
@@ -51,10 +59,16 @@ public class StationRunner extends Runner<Station> {
     }
 
     @Override
-    List<Station> loadRecordsFromFile(String inputPath) {
+    List<Station> loadRecordsFromFile(File... files) {
+        List<Station> stationsFromFile = new ArrayList<>();
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(getColumnNames(), new BracketFormatter());
-        Reader<List<Station>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
-        return textReader.read(null);
+        for (File file : files) {
+            Reader<List<Station>> textReader = new StationsFileReader(file, parser);
+            stationsFromFile.addAll(textReader.read(null));
+            FileUtils.move(file.toString(), archiveDirectory);
+        }
+        System.out.println("Total number of station records: " + stationsFromFile.size());
+        return stationsFromFile;
     }
 
     @Override

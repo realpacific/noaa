@@ -9,7 +9,7 @@
         <!-- Select our SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <!-- Echo the SQL to stdout -->
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <!-- Set the current session context -->
         <property name="current_session_context_class">thread</property>
         <!-- Drop and re-create the database schema on startup -->
@@ -20,8 +20,8 @@
         <property name="hibernate.dbcp.maxIdle">10</property>
         <property name="hibernate.dbcp.minIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <property name="format_sql">true</property>
-        <property name="use_sql_comments">true</property>
+        <property name="format_sql">false</property>
+        <property name="use_sql_comments">false</property>
         <mapping class="com.realpacific.projectnoaa.entities.Station"/>
         <mapping class="com.realpacific.projectnoaa.entities.Gsod"/>
     </session-factory>

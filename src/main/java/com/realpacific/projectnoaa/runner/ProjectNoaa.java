@@ -56,7 +56,7 @@ final public class ProjectNoaa implements ApplicationRunner {
 
     private List<Station> readRecordsFromFile(String inputPath, List<String> columnNames) {
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(columnNames, new BracketFormatter());
-        Reader<List<Station>> textReader = new StationsFileReader(FileUtils.createFile(inputPath), parser);
+        Reader<List<Station>> textReader = new StationsFileReader(FileUtils.getFile(inputPath), parser);
         return textReader.read(null);
     }
 

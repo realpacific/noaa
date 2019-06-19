@@ -14,7 +14,7 @@ class DatabaseIdSearcher extends IdSearcher {
     }
 
     @Override
-    protected List<Station> search(Pair<Integer, Integer> query) {
-        return service.findAllStationsByIdRange(query.getFirst().toString(), query.getSecond().toString());
+    protected List<Station> search(Pair<String, String> query) {
+        return service.findAllStationsByIdRange(query.getFirst(), query.getSecond());
     }
 }

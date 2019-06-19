@@ -1,5 +1,6 @@
 package com.realpacific.projectnoaa.config;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -18,6 +19,7 @@ class PropertiesFileManager extends ConfigurationManager {
             properties.load(inputStream);
             return properties;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }

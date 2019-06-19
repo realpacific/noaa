@@ -14,19 +14,13 @@ class InMemoryIdSearcher extends IdSearcher {
     }
 
     @Override
-    protected List<Station> search(Pair<Integer, Integer> query) {
+    protected List<Station> search(Pair<String, String> query) {
         return stations.stream()
-                .filter(record -> {
-                    String stationId = extractDigitsFromUsafId(record.getUsafId());
-                    int stationIdAsInteger = Integer.valueOf(stationId);
-                    return (stationIdAsInteger > query.getFirst() && stationIdAsInteger < query.getSecond());
-                }).collect(Collectors.toList());
+                .filter(record -> isInBetween(record.getUsafId(), query.getFirst(), query.getSecond()))
+                .collect(Collectors.toList());
     }
 
-    private String extractDigitsFromUsafId(String usafId) {
-        if (Character.isLetter(usafId.charAt(0))) {
-            usafId = usafId.replaceFirst("[a-zA-Z]", "");
-        }
-        return usafId;
+    private boolean isInBetween(String valueToCompare, String minValue, String maxValue) {
+        return valueToCompare.compareTo(minValue) >= 0 && valueToCompare.compareTo(maxValue) <= 0;
     }
 }

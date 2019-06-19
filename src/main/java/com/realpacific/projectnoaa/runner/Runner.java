@@ -4,6 +4,7 @@ import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.Reader;
 
+import java.io.File;
 import java.util.List;
 
 public abstract class Runner<T> {
@@ -11,7 +12,7 @@ public abstract class Runner<T> {
 
     abstract List<String> getColumnNames();
 
-    abstract List<T> loadRecordsFromFile(String inputPath);
+    abstract List<T> loadRecordsFromFile(File... files);
 
     abstract String queryUserForNatureOfOperation();
 
@@ -21,5 +22,5 @@ public abstract class Runner<T> {
 
     abstract void displayResult(List<T> searchResults);
 
-    abstract String getFilePath();
+    abstract String getWorkingDirectory();
 }

@@ -45,7 +45,7 @@ public class StationPrinterTest {
         Class cls = station.getClass();
         try {
             for (String column : displayColumns) {
-                Field field = cls.getDeclaredField(configuration.getConfigurationToRecordNameMap().get(column));
+                Field field = cls.getDeclaredField(configuration.getConfigurationToStationNameMap().get(column));
                 field.setAccessible(true);
                 System.out.println(field.get(station));
             }
