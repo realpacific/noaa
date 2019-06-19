@@ -1,11 +1,5 @@
 package com.realpacific.projectnoaa.adaptiblesearchers;
 
-import com.realpacific.projectnoaa.services.DatabaseService;
+public interface SearchProvider<T> extends HasDatabase, HasInMemory<T> {
 
-import java.util.List;
-
-public interface SearchProvider<T> {
-    Searcher get(DatabaseService service);
-
-    Searcher get(List<T> data);
 }

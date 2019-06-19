@@ -18,6 +18,7 @@ public class FileHeaderToColumnWidthParser implements Parser<Map<String, Pair<In
      * The strategy used to format the header before finding its width
      */
     private RegexFormatter formatterStrategy;
+    private Map<String, Pair<Integer, Integer>> spacingForHeadlineMap = new LinkedHashMap<>();
 
     public FileHeaderToColumnWidthParser(List<String> headers, RegexFormatter formatterStrategy) {
         this.headers = headers;
@@ -32,8 +33,6 @@ public class FileHeaderToColumnWidthParser implements Parser<Map<String, Pair<In
      */
     @Override
     public Map<String, Pair<Integer, Integer>> parse(String text) {
-        // Protect the order in which the header sequence occurs
-        Map<String, Pair<Integer, Integer>> spacingForHeadlineMap = new LinkedHashMap<>();
         int lastMatchingIndex = -1;
         for (int i = 0; i < headers.size(); i++) {
             String header = headers.get(i);

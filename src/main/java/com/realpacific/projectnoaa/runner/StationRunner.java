@@ -1,7 +1,7 @@
 package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
-import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.StationSearchProviderFactory;
 import com.realpacific.projectnoaa.config.ConfigurationManager;
 import com.realpacific.projectnoaa.config.ConfigurationUtils;
 import com.realpacific.projectnoaa.config.NoaaConfiguration;
@@ -85,7 +85,7 @@ public class StationRunner extends Runner<Station> {
 
     @Override
     Searcher resolveUserOperation(String userInput) {
-        return StationServiceFactory.getSearcher(userInput, service);
+        return StationSearchProviderFactory.getSearcher(userInput, service);
     }
 
     @Override

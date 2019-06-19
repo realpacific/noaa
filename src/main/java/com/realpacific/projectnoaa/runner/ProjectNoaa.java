@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.adaptiblesearchers.StationServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.StationSearchProviderFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Pair;
@@ -65,8 +65,8 @@ final public class ProjectNoaa implements ApplicationRunner {
         while (true) {
             String inputOption = queryNatureOfOperation();
 
-            Searcher searcher = StationServiceFactory.getSearcher(inputOption, service);
-            // Searcher searcher = StationServiceFactory.getSearcher(inputOption, service.findAllStations());
+            Searcher searcher = StationSearchProviderFactory.getSearcher(inputOption, service);
+            // Searcher searcher = StationSearchProviderFactory.getSearcher(inputOption, service.findAllStations());
             if (searcher == null) break;
             else {
                 Reader searchQueryReader = searcher.getInputReader();

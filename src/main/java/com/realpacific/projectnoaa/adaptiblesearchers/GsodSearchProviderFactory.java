@@ -4,19 +4,19 @@ import com.realpacific.projectnoaa.adaptiblesearchers.gsod.countrydate.CountryAn
 import com.realpacific.projectnoaa.adaptiblesearchers.gsod.date.AvailableDateSearchProvider;
 import com.realpacific.projectnoaa.adaptiblesearchers.gsod.iddate.IdAndDateSearchProvider;
 import com.realpacific.projectnoaa.adaptiblesearchers.gsod.namedate.NameAndDateSearchProvider;
-import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.exceptions.InvalidInputException;
 import com.realpacific.projectnoaa.services.GsodService;
 
-public class GsodServiceFactory {
+public class GsodSearchProviderFactory {
 
     public static Searcher getSearcher(String code, GsodService service) {
-        SearchProvider<Gsod> searchProvider = resolveSearchProvider(code);
+        HasDatabase searchProvider = resolveSearchProvider(code);
+        if (searchProvider == null) return null;
         return searchProvider.get(service);
     }
 
-    private static SearchProvider<Gsod> resolveSearchProvider(String code) {
-        SearchProvider<Gsod> searchProvider;
+    private static HasDatabase resolveSearchProvider(String code) {
+        HasDatabase searchProvider;
         switch (code) {
             case "1":
                 searchProvider = new AvailableDateSearchProvider();

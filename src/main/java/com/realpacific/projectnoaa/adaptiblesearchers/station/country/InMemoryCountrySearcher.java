@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 class InMemoryCountrySearcher extends CountrySearcher {
     private List<Station> stations;
 
-    public InMemoryCountrySearcher(List<Station> stations) {
+    InMemoryCountrySearcher(List<Station> stations) {
         this.stations = stations;
     }
 

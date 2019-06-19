@@ -10,7 +10,7 @@ import java.util.List;
 class DatabaseLocationSearcher extends LocationSearcher {
     private StationService service;
 
-    public DatabaseLocationSearcher(StationService service) {
+    DatabaseLocationSearcher(StationService service) {
         this.service = service;
     }
 

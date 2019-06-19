@@ -6,10 +6,10 @@ import com.realpacific.projectnoaa.entities.Pair;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InMemoryIdAndDateSearcher extends IdAndDateSearcher {
+class InMemoryIdAndDateSearcher extends IdAndDateSearcher {
     private List<Gsod> gsods;
 
-    public InMemoryIdAndDateSearcher(List<Gsod> gsods) {
+    InMemoryIdAndDateSearcher(List<Gsod> gsods) {
         this.gsods = gsods;
     }
 

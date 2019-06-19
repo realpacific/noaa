@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 class InMemoryIdSearcher extends IdSearcher {
     private List<Station> stations;
 
-    public InMemoryIdSearcher(List<Station> stations) {
+    InMemoryIdSearcher(List<Station> stations) {
         this.stations = stations;
     }
 

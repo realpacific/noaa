@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 class InMemoryNameSearcher extends NameSearcher {
     private List<Station> stations;
 
-    public InMemoryNameSearcher(List<Station> stations) {
+    InMemoryNameSearcher(List<Station> stations) {
         this.stations = stations;
     }
 

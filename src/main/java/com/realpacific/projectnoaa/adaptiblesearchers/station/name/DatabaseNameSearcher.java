@@ -8,7 +8,7 @@ import java.util.List;
 class DatabaseNameSearcher extends NameSearcher {
     private StationService service;
 
-    public DatabaseNameSearcher(StationService service) {
+    DatabaseNameSearcher(StationService service) {
         this.service = service;
     }
 

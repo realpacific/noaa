@@ -1,6 +1,6 @@
 package com.realpacific.projectnoaa.runner;
 
-import com.realpacific.projectnoaa.adaptiblesearchers.GsodServiceFactory;
+import com.realpacific.projectnoaa.adaptiblesearchers.GsodSearchProviderFactory;
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.constants.AppConstants;
 import com.realpacific.projectnoaa.entities.Gsod;
@@ -17,7 +17,6 @@ import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public class GsodRunner extends Runner<Gsod> {
 
     @Override
     Searcher resolveUserOperation(String userInput) {
-        return GsodServiceFactory.getSearcher(userInput, service);
+        return GsodSearchProviderFactory.getSearcher(userInput, service);
     }
 
     @Override

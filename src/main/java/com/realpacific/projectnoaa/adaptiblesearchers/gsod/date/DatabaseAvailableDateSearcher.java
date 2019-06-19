@@ -5,10 +5,10 @@ import com.realpacific.projectnoaa.services.GsodService;
 
 import java.util.List;
 
-public class DatabaseAvailableDateSearcher extends AvailableDateSearcher {
+class DatabaseAvailableDateSearcher extends AvailableDateSearcher {
     private GsodService service;
 
-    public DatabaseAvailableDateSearcher(GsodService service) {
+    DatabaseAvailableDateSearcher(GsodService service) {
         this.service = service;
     }
 

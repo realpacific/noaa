@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 class InMemoryLocationSearcher extends LocationSearcher {
     private List<Station> stations;
 
-    public InMemoryLocationSearcher(List<Station> stations) {
+    InMemoryLocationSearcher(List<Station> stations) {
         this.stations = stations;
     }
 

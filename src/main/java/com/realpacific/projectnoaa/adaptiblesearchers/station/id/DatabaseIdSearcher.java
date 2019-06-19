@@ -9,7 +9,7 @@ import java.util.List;
 class DatabaseIdSearcher extends IdSearcher {
     private StationService service;
 
-    public DatabaseIdSearcher(StationService service) {
+    DatabaseIdSearcher(StationService service) {
         this.service = service;
     }
 

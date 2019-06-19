@@ -10,7 +10,7 @@ import com.realpacific.projectnoaa.services.StationService;
 
 import java.util.List;
 
-public class StationServiceFactory {
+public class StationSearchProviderFactory {
     public static Searcher getSearcher(String code, StationService service) {
         SearchProvider searchProvider = resolveSearchProvider(code);
         if(searchProvider == null) return null;

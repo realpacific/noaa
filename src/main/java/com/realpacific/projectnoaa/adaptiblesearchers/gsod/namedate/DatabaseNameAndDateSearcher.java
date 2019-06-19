@@ -6,10 +6,10 @@ import com.realpacific.projectnoaa.services.GsodService;
 
 import java.util.List;
 
-public class DatabaseNameAndDateSearcher extends NameAndDateSearcher {
+class DatabaseNameAndDateSearcher extends NameAndDateSearcher {
     private GsodService service;
 
-    public DatabaseNameAndDateSearcher(GsodService service) {
+    DatabaseNameAndDateSearcher(GsodService service) {
         this.service = service;
     }
 
