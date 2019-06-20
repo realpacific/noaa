@@ -2,7 +2,7 @@
 
 There are two branches in this project;
 * enhancement-0 : contains reading Stations.txt and searching in-memory
-* enhancement-1 : contains reading gsod & stations.txt and searching in database
+* enhancement-1 / master : contains reading gsod & stations.txt and searching in database
 
 ### TO START
 * Stations from In memory: -Dnoaa.Main=inmemory
@@ -28,3 +28,6 @@ There are two branches in this project;
 
  ### NOTES:
  * Some of the test cases I have written here, I've used it as a`learning test`
+ * I've included the NOAA files in the /noaa-files folder of project root's directory. Please configure `config.properties` to point to the location of these files.
+ * Default db url is `jdbc:mysql://localhost:3306/records_db` at database name **records_db**
+ * Default hbm2dll property is set to `<property name="hbm2ddl.auto">create</property>` at `hibernate.cfg.xml`
