@@ -40,7 +40,7 @@ public class GsodRunner extends Runner<Gsod> {
         for (File file : files) {
             Reader<List<Gsod>> textReader = new GsodFileReader(file, parser);
             gsodsFromFile.addAll(textReader.read(null));
-            FileUtils.move(file.toString(), archiveDirectory);
+            moveFilesToArchive(file);
         }
         System.out.println("Total number of gsod records: " + gsodsFromFile.size());
         return gsodsFromFile;

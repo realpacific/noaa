@@ -51,7 +51,7 @@ public class StationRunner extends Runner<Station> {
         for (File file : files) {
             Reader<List<Station>> textReader = new StationsFileReader(file, parser);
             stationsFromFile.addAll(textReader.read(null));
-            FileUtils.move(file.toString(), archiveDirectory);
+            moveFilesToArchive(file);
         }
         System.out.println("Total number of station records: " + stationsFromFile.size());
         return stationsFromFile;
