@@ -1,14 +1,13 @@
 package com.realpacific.projectnoaa.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_station")
 public class Station {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private String usafId;
     private String wban;
     private String stationName;
@@ -21,11 +20,10 @@ public class Station {
     private String startDate;
     private String endDate;
 
-    private Station() {
-    }
+    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
+    private List<Gsod> gsods = new ArrayList<>();
 
-    public Long getId() {
-        return id;
+    private Station() {
     }
 
     public String getUsafId() {
@@ -70,6 +68,14 @@ public class Station {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public List<Gsod> getGsods() {
+        return gsods;
+    }
+
+    public void setGsods(List<Gsod> gsods) {
+        this.gsods = gsods;
     }
 
     public static class Builder {

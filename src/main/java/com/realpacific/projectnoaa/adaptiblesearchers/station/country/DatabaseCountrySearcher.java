@@ -14,7 +14,6 @@ class DatabaseCountrySearcher extends CountrySearcher {
 
     @Override
     protected List<Station> search(String query) {
-        System.out.println("hello");
         return service.findAllStationsByCountry(query);
     }
 

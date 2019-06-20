@@ -2,6 +2,7 @@ package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.readers.Reader;
+import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.io.File;
 import java.util.List;
@@ -20,6 +21,10 @@ public abstract class Runner<T> {
         if (data.size() > 0) {
             persistToRepository(data);
         }
+    }
+
+    protected final void moveFilesToArchive(File file) {
+        FileUtils.move(file.getPath(), archiveDirectory);
     }
 
     abstract void initializeService();

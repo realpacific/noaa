@@ -9,6 +9,8 @@ public interface StationService extends DatabaseService {
 
     List<Station> findAllStations();
 
+    Station findStationByUsafId(String usafId);
+
     List<Station> findAllStationsByCountry(String country);
 
     List<Station> findAllStationsByName(String name);

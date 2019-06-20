@@ -2,6 +2,7 @@ package com.realpacific.projectnoaa.repositories;
 
 import com.realpacific.projectnoaa.connection.HibernateUtils;
 import com.realpacific.projectnoaa.entities.Gsod;
+import com.realpacific.projectnoaa.exceptions.DataFetchException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,81 +18,76 @@ public class GsodRepository {
     private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
     @Transactional
-    public void bulkSave(List<Gsod> gsods) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+    public void saveOne(Gsod gsod) {
+        try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            for (Gsod gsod : gsods) {
-                session.save(gsod);
-            }
+            session.save(gsod);
             session.getTransaction().commit();
-            session.close();
         } catch (HibernateException e) {
-            e.printStackTrace();
+            throw new DataFetchException(e.getMessage());
         }
     }
 
     @Transactional
     public List<Gsod> findAllGsods() {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        List<Gsod> gsods = session.createQuery("SELECT g FROM Gsod g", Gsod.class).list();
-        session.getTransaction().commit();
-        session.close();
-        return gsods;
-
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            return session.createQuery("SELECT g FROM Gsod g", Gsod.class).list();
+        } catch (HibernateException e) {
+            throw new DataFetchException(e.getMessage());
+        }
     }
 
     @Transactional
     public List<Gsod> findAllGsodsByIdAndDate(String id, String date) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query<Gsod> query = session.createQuery("SELECT g FROM Gsod g WHERE g.stationNumber like :id AND g.date like :date", Gsod.class);
-        query.setParameter("date", date);
-        query.setParameter("id", id);
-        List<Gsod> gsods = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return gsods;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            Query<Gsod> query = session.createQuery("SELECT g FROM Gsod g WHERE g.stationNumber like :id AND g.date like :date", Gsod.class);
+            query.setParameter("date", date);
+            query.setParameter("id", id);
+            return query.list();
+        } catch (HibernateException e) {
+            throw new DataFetchException(e.getMessage());
+        }
     }
 
 
     @Transactional
     public List<Gsod> findAllGsodsByCountryAndDate(String country, String date) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query<Gsod> query = session
-                .createNativeQuery("SELECT g.* FROM tbl_station AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.country like ?1", Gsod.class);
-        query.setParameter(0, date);
-        query.setParameter(1, country);
-        List<Gsod> gsods = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return gsods;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            Query<Gsod> query = session.createQuery("SELECT g FROM Gsod g JOIN FETCH g.station s WHERE g.date LIKE :date AND  s.country like :country", Gsod.class);
+            query.setParameter("date", date);
+            query.setParameter("country", country);
+            return query.list();
+        } catch (HibernateException e) {
+            throw new DataFetchException(e.getMessage());
+        }
     }
 
 
     @Transactional
     public List<Gsod> findAllGsodsByStationNameAndDate(String stationName, String date) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query<Gsod> query = session.createNativeQuery("SELECT g.* FROM tbl_station AS r INNER JOIN tbl_gsod AS g ON g.wban = r.wban AND g.stationNumber != '999999' AND g.wban != '99999' WHERE g.date like ?0 AND  r.stationName like ?1", Gsod.class);
-        query.setParameter(0, date)
-                .setParameter(1, stationName);
-        List<Gsod> gsods = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return gsods;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            Query<Gsod> query = session.createQuery("SELECT g FROM Gsod g JOIN FETCH g.station s WHERE g.date LIKE :date AND  s.stationName like :stationName", Gsod.class);
+            query.setParameter("date", date)
+                    .setParameter("stationName", stationName);
+            return query.list();
+        } catch (HibernateException e) {
+            throw new DataFetchException(e.getMessage());
+        }
     }
 
 
     public List<String> findAllAvailableDates() {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        NativeQuery query = session.createNativeQuery("SELECT DISTINCT(g.date) FROM tbl_gsod AS g WHERE g.stationNumber != '999999' OR g.wban != '99999'");
-        List<String> dates = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return dates;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            NativeQuery<String> query = session.createNativeQuery("SELECT DISTINCT(g.date) FROM tbl_gsod AS g");
+            List<String> dates = query.list();
+            return dates;
+        } catch (HibernateException e) {
+            throw new DataFetchException(e.getMessage());
+        }
     }
 }

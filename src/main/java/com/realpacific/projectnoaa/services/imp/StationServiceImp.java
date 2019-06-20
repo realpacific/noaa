@@ -3,15 +3,25 @@ package com.realpacific.projectnoaa.services.imp;
 import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.repositories.StationRepository;
 import com.realpacific.projectnoaa.services.StationService;
+import com.realpacific.projectnoaa.validators.StationValidationStrategy;
+import com.realpacific.projectnoaa.validators.Validator;
 
 import java.util.List;
 
 public class StationServiceImp implements StationService {
     private StationRepository repository = new StationRepository();
+    private Validator<Station> validator = new StationValidationStrategy();
 
     @Override
     public void bulkSave(List<Station> stations) {
-        repository.save(stations);
+        for (Station station : stations) {
+            if (validator.isValid(station)) repository.saveOne(station);
+        }
+    }
+
+    @Override
+    public Station findStationByUsafId(String usafId) {
+        return repository.findStationById(usafId);
     }
 
     @Override

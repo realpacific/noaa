@@ -26,6 +26,9 @@ public class Gsod {
     private String snowDepth;
     private String frshtt;
 
+    @ManyToOne
+    private Station station;
+
     protected Gsod() {
     }
 
@@ -95,6 +98,14 @@ public class Gsod {
 
     public String getFrshtt() {
         return frshtt;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
     }
 
     public static class Builder {
