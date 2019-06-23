@@ -11,17 +11,18 @@ import java.util.regex.Pattern;
 
 public class FileHeaderToColumnWidthParser implements Parser<Map<String, Pair<Integer, Integer>>> {
     /**
-     * List of headers in same order as it occurs in the source
+     * List of columns in same order as it occurs in the source
      */
-    private List<String> headers;
+    private List<String> columns;
     /**
      * The strategy used to format the header before finding its width
      */
     private RegexFormatter formatterStrategy;
     private Map<String, Pair<Integer, Integer>> spacingForHeadlineMap = new LinkedHashMap<>();
+    private int lastMatchingIndex = -1;
 
-    public FileHeaderToColumnWidthParser(List<String> headers, RegexFormatter formatterStrategy) {
-        this.headers = headers;
+    public FileHeaderToColumnWidthParser(List<String> columns, RegexFormatter formatterStrategy) {
+        this.columns = columns;
         this.formatterStrategy = formatterStrategy;
     }
 
@@ -33,22 +34,38 @@ public class FileHeaderToColumnWidthParser implements Parser<Map<String, Pair<In
      */
     @Override
     public Map<String, Pair<Integer, Integer>> parse(String text) {
-        int lastMatchingIndex = -1;
-        for (int i = 0; i < headers.size(); i++) {
-            String header = headers.get(i);
-            if (i == headers.size() - 1) {
+        findWidthForEachColumnInHeaderRow(text);
+        return spacingForHeadlineMap;
+    }
+
+    private void findWidthForEachColumnInHeaderRow(String headerRowText) {
+        for (int i = 0; i < columns.size(); i++) {
+            String column = columns.get(i);
+            if (isLastColumn(i)) {
                 // Starts from width range of second last column
-                spacingForHeadlineMap.put(header, new Pair<>(lastMatchingIndex, Integer.MAX_VALUE));
+                spacingForHeadlineMap.put(column, new Pair<>(lastMatchingIndex, Integer.MAX_VALUE));
             } else {
                 // Accommodating the possibility of having a space in front of a column name (as in the gsod files) except in the first column
-                Pattern pattern = Pattern.compile((i != 0 ? "(\\s)" : "") + formatterStrategy.format(header) + "(\\s)+");
-                Matcher matcher = pattern.matcher(text);
+                Pattern patternForAccommodatingSpacesAroundColumnName =
+                        Pattern.compile((isNotFirstColumn(i) ? "(\\s)" : "") + formatterStrategy.format(column) + "(\\s)+");
+                Matcher matcher = patternForAccommodatingSpacesAroundColumnName.matcher(headerRowText);
                 if (matcher.find()) {
-                    spacingForHeadlineMap.put(header, new Pair<>(matcher.start(), matcher.end() - 1));
+                    spacingForHeadlineMap.put(column, new Pair<>(matcher.start(), matcher.end() - 1));
                     lastMatchingIndex = matcher.end() - 1;
                 }
             }
         }
-        return spacingForHeadlineMap;
+    }
+
+    private boolean isLastColumn(int index) {
+        return index == columns.size() - 1;
+    }
+
+    private boolean isFirstColumn(int index) {
+        return index == 0;
+    }
+
+    private boolean isNotFirstColumn(int index) {
+        return !isFirstColumn(index);
     }
 }

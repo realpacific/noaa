@@ -10,7 +10,7 @@ import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.readers.StationsFileReader;
+import com.realpacific.projectnoaa.readers.filereaders.StationsFileReader;
 import com.realpacific.projectnoaa.utils.FileUtils;
 
 import java.io.File;

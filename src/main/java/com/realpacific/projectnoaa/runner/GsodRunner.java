@@ -9,8 +9,9 @@ import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
-import com.realpacific.projectnoaa.readers.GsodFileReader;
+import com.realpacific.projectnoaa.readers.filereaders.GsodFileReader;
 import com.realpacific.projectnoaa.readers.Reader;
+import com.realpacific.projectnoaa.readers.filereaders.LocalFileReader;
 import com.realpacific.projectnoaa.services.GsodService;
 import com.realpacific.projectnoaa.services.imp.GsodServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
@@ -38,8 +39,8 @@ public class GsodRunner extends Runner<Gsod> {
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(getColumnNames(), new BracketFormatter());
         List<Gsod> gsodsFromFile = new ArrayList<>();
         for (File file : files) {
-            Reader<List<Gsod>> textReader = new GsodFileReader(file, parser);
-            gsodsFromFile.addAll(textReader.read(null));
+            LocalFileReader<Gsod> fileReader = new GsodFileReader(file, parser);
+            gsodsFromFile.addAll(fileReader.read(null));
             moveFilesToArchive(file);
         }
         System.out.println("Total number of gsod records: " + gsodsFromFile.size());

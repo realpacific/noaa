@@ -2,22 +2,16 @@ package com.realpacific.projectnoaa.runner;
 
 import com.realpacific.projectnoaa.adaptiblesearchers.Searcher;
 import com.realpacific.projectnoaa.adaptiblesearchers.StationSearchProviderFactory;
-import com.realpacific.projectnoaa.config.ConfigurationManager;
-import com.realpacific.projectnoaa.config.ConfigurationUtils;
-import com.realpacific.projectnoaa.config.NoaaConfiguration;
 import com.realpacific.projectnoaa.constants.AppConstants;
-import com.realpacific.projectnoaa.entities.Gsod;
 import com.realpacific.projectnoaa.entities.Pair;
 import com.realpacific.projectnoaa.entities.Station;
 import com.realpacific.projectnoaa.formatters.BracketFormatter;
 import com.realpacific.projectnoaa.parsers.FileHeaderToColumnWidthParser;
 import com.realpacific.projectnoaa.parsers.Parser;
-import com.realpacific.projectnoaa.printers.station.StationPrinter;
-import com.realpacific.projectnoaa.printers.station.TableStationPrinter;
 import com.realpacific.projectnoaa.readers.ConsoleReader;
-import com.realpacific.projectnoaa.readers.DummyReader;
 import com.realpacific.projectnoaa.readers.Reader;
-import com.realpacific.projectnoaa.readers.StationsFileReader;
+import com.realpacific.projectnoaa.readers.filereaders.LocalFileReader;
+import com.realpacific.projectnoaa.readers.filereaders.StationsFileReader;
 import com.realpacific.projectnoaa.services.StationService;
 import com.realpacific.projectnoaa.services.imp.StationServiceImp;
 import com.realpacific.projectnoaa.utils.FileUtils;
@@ -49,8 +43,8 @@ public class StationRunner extends Runner<Station> {
         List<Station> stationsFromFile = new ArrayList<>();
         Parser<Map<String, Pair<Integer, Integer>>> parser = new FileHeaderToColumnWidthParser(getColumnNames(), new BracketFormatter());
         for (File file : files) {
-            Reader<List<Station>> textReader = new StationsFileReader(file, parser);
-            stationsFromFile.addAll(textReader.read(null));
+            LocalFileReader<Station> fileReader = new StationsFileReader(file, parser);
+            stationsFromFile.addAll(fileReader.read(null));
             moveFilesToArchive(file);
         }
         System.out.println("Total number of station records: " + stationsFromFile.size());
