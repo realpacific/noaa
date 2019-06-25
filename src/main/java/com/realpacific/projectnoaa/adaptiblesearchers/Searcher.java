@@ -10,6 +10,8 @@ import com.realpacific.projectnoaa.readers.Reader;
 import java.util.List;
 
 public abstract class Searcher<T, R> {
+    private final ConfigurationManager configurationManager = ConfigurationUtils.getConfigurationManager();
+
     protected abstract T convert(Object query);
 
     protected abstract boolean isValid(T query);
@@ -34,7 +36,6 @@ public abstract class Searcher<T, R> {
     }
 
     protected final NoaaConfiguration loadConfigurationFromFile() {
-        ConfigurationManager configurationManager = ConfigurationUtils.getConfigurationManager();
         return configurationManager.loadPropertyFile();
     }
 

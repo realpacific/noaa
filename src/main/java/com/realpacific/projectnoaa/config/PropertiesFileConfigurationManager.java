@@ -3,11 +3,10 @@ package com.realpacific.projectnoaa.config;
 import java.io.InputStream;
 import java.util.Properties;
 
-class PropertiesFileManager extends ConfigurationManager {
+class PropertiesFileConfigurationManager extends ConfigurationManager {
     private InputStream inputStream;
 
-    PropertiesFileManager(InputStream inputStream) {
-        super();
+    PropertiesFileConfigurationManager(InputStream inputStream) {
         this.inputStream = inputStream;
     }
 

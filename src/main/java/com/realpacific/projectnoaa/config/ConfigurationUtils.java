@@ -1,16 +1,12 @@
 package com.realpacific.projectnoaa.config;
 
-import com.realpacific.projectnoaa.connection.HibernateUtils;
-
 public class ConfigurationUtils {
 
-    private static ConfigurationManager configurationManager;
+    private static ConfigurationManager configurationManager = null;
 
     public static ConfigurationManager getConfigurationManager() {
-        if (configurationManager == null) {
-            configurationManager = new PropertiesFileManager(HibernateUtils.class
-                    .getClassLoader().getResourceAsStream("config.properties"));
-        }
+        configurationManager = new PropertiesFileConfigurationManager(
+                ConfigurationUtils.class.getClassLoader().getResourceAsStream("config.properties"));
         return configurationManager;
     }
 }
