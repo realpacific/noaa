@@ -18,8 +18,9 @@ public class SearcherTest {
 
     @Test
     public void archiveAndWorkingDirectoryShouldBePresent() {
-        assertTrue(searcher.loadConfigurationFromFile().get(NoaaConfiguration.CONFIGURATION_WORKING_DIR).isPresent());
-        assertTrue(searcher.loadConfigurationFromFile().get(NoaaConfiguration.CONFIGURATION_ARCHIVE_DIR).isPresent());
+        NoaaConfiguration configuration = searcher.loadConfigurationFromFile();
+        assertTrue(configuration.get(NoaaConfiguration.CONFIGURATION_WORKING_DIR).isPresent());
+        assertTrue(configuration.get(NoaaConfiguration.CONFIGURATION_ARCHIVE_DIR).isPresent());
     }
 
 }
